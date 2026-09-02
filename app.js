@@ -29,16 +29,22 @@ function renderFilters(){
 }
 
 function renderProducts(){
-  const list = currentCategory === "Todos" ? PRODUCTS : PRODUCTS.filter(p => p.category === currentCategory);
+  const list = currentCategory === "Todos"
+    ? PRODUCTS
+    : PRODUCTS.filter(p => p.category === currentCategory);
+
   productsEl.innerHTML = list.map(p => `
-    <article class="product-card">
+    <article class="product-card" onclick="openProduct(${p.id})">
       <div class="product-image">${p.emoji}</div>
+
       <div class="product-body">
         <span class="brand">${p.brand}</span>
         <h3>${p.name}</h3>
         <div class="presentation">${p.presentation}</div>
-        <div class="price">${money(p.price)}</div>
-        <button class="add-btn" onclick="addToCart(${p.id})">Agregar al pedido</button>
+
+        <button class="add-btn" onclick="event.stopPropagation(); openProduct(${p.id})">
+          Ver producto
+        </button>
       </div>
     </article>
   `).join("");
