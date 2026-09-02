@@ -21,4 +21,11 @@ const PRODUCTS = [
   { id:14, name:"Rulo Relleno", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"🍦" },
   { id:15, name:"Cassata", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"🍰" },
   { id:16, name:"Palito Helado de Agua", brand:"May Cream", category:"Palitos", presentation:"Presentación por caja", price:0, emoji:"🍧" },
-];
+{id:17, name:"Crema", brand:"May Cream", category:"Potes", presentation:"", price:0, emoji:"🍦"},
+{id:18, name:"Torneado Doble", brand:"May Cream", category:"Especiales", presentation:"", price:0, emoji:"🍦"},
+{id:19, name:"Copón", brand:"May Cream", category:"Especiales", presentation:"", price:0, emoji:"🍨"},
+{id:20, name:"Bombón Corazón", brand:"May Cream", category:"Bombones", presentation:"", price:0, emoji:"❤️"},
+{id:21, name:"Granizados", brand:"May Cream", category:"Especiales", presentation:"", price:0, emoji:"🍫"},
+{id:22, name:"Alfabom", brand:"Val-Cream", category:"Especiales", presentation:"", price:0, emoji:"🍦"},
+{id:23, name:"Palito Helado de Agua", brand:"Val-Cream", category:"Palitos", presentation:"Caja x40 unidades", price:0, emoji:"🍭"},
+{id:24, name:"Latidos", brand:"Val-Cream", category:"Especiales", presentation:"", price:0, emoji:"❤️"},Bienvenido al portapapeles de Gboard; todo texto que copies se guardará aquí.];
