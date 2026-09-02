@@ -13,20 +13,22 @@ const whatsappBtn = document.getElementById("whatsappBtn");
 let currentCategory = "Todos";
 let cart = JSON.parse(localStorage.getItem("jys-cart") || "{}");
 
-/* Cada producto tiene su propia foto */
+/*
+  FOTOS VERIFICADAS A PARTIR DE LAS IMÁGENES ORIGINALES.
+  Si un producto no tiene una foto claramente identificada,
+  se mantiene su emoji en lugar de poner una foto equivocada.
+*/
 const IMAGE_BY_ID = {
-  2: "producto-cono-may.jpg",
-  3: "producto-bombon-val.jpg",
-  5: "producto-bombon-crocante-may.jpg",
-  6: "producto-bombon-crocante-val.jpg",
-  7: "producto-bombon-split.jpg",
-  10: "producto-pote-1400.jpg",
-  11: "producto-balde-3-litros.jpg",
-  12: "producto-carita.jpg",
-  13: "producto-alfabom-may.jpg",
-  14: "producto-rulo-relleno.jpg",
-  16: "producto-palito-agua-may.jpg",
-  21: "producto-granizados.jpg"
+  2: "foto-cono-may.jpg",
+  3: "foto-bombon-val.jpg",
+  5: "foto-bombon-crocante-val.jpg",
+  6: "foto-bombon-crocante-may.jpg",
+  7: "foto-bombon-split.jpg",
+  10: "foto-pote-1400-may.jpg",
+  11: "foto-pote-3-litros-may.jpg",
+  12: "foto-carita-may.jpg",
+  13: "foto-alfabom-may.jpg",
+  14: "foto-rulito-may.jpg"
 };
 
 const money = n =>
@@ -60,11 +62,12 @@ function renderFilters() {
 }
 
 function productImage(p) {
-  const image = IMAGE_BY_ID[p.id] || p.image;
+  const image = IMAGE_BY_ID[p.id];
 
   return image
-    ? `<img src="${image}" alt="${p.name} ${p.brand}" class="product-photo">`
-    : p.emoji;
+    ? `<img src="${image}" alt="${p.name} ${p.brand}" class="product-photo"
+        style="width:100%;height:100%;object-fit:contain;padding:8px;box-sizing:border-box;">`
+    : (p.emoji || "🍦");
 }
 
 function renderProducts() {
@@ -96,10 +99,8 @@ function openProduct(id) {
   const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
 
-  const image = IMAGE_BY_ID[p.id] || p.image;
-
-  const message =
-    `Hola! 👋 Quiero consultar el precio de ${p.name} (${p.brand}).`;
+  const image = IMAGE_BY_ID[p.id];
+  const message = `Hola! 👋 Quiero consultar el precio de ${p.name} (${p.brand}).`;
 
   const modal = document.createElement("div");
   modal.id = "productModal";
@@ -118,29 +119,21 @@ function openProduct(id) {
   const visual = image
     ? `<img src="${image}" alt="${p.name} ${p.brand}"
         style="width:100%;height:260px;object-fit:contain;border-radius:18px;background:#fff4ee;">`
-    : `<div style="font-size:80px;margin:20px;">${p.emoji}</div>`;
+    : `<div style="font-size:80px;margin:20px;">${p.emoji || "🍦"}</div>`;
 
   modal.innerHTML = `
     <div style="background:white;width:100%;max-width:420px;border-radius:24px;padding:20px;text-align:center;max-height:90vh;overflow:auto;">
       <button onclick="document.getElementById('productModal').remove()"
         style="float:right;border:0;background:none;font-size:28px;">×</button>
-
       ${visual}
-
-      <div style="color:#c76b82;font-weight:bold;margin-top:12px;">
-        ${p.brand}
-      </div>
-
+      <div style="color:#c76b82;font-weight:bold;margin-top:12px;">${p.brand}</div>
       <h2>${p.name}</h2>
-
       <p>${p.presentation || "Consultar presentación disponible"}</p>
-
       <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}"
         target="_blank"
         style="display:block;background:#25D366;color:white;text-decoration:none;padding:15px;border-radius:14px;font-weight:bold;">
         📲 Consultar precio por WhatsApp
       </a>
-
       <button onclick="document.getElementById('productModal').remove()"
         style="margin-top:12px;border:0;background:none;padding:10px;">
         ← Volver al catálogo
@@ -164,11 +157,7 @@ function addToCart(id) {
 
 function changeQty(id, delta) {
   cart[id] = (cart[id] || 0) + delta;
-
-  if (cart[id] <= 0) {
-    delete cart[id];
-  }
-
+  if (cart[id] <= 0) delete cart[id];
   save();
   renderCart();
 }
@@ -178,29 +167,24 @@ function renderCart() {
 
   cartItemsEl.innerHTML = !entries.length
     ? `<p class="empty">Todavía no agregaste productos.</p>`
-    : entries
-        .map(([id, qty]) => {
-          const p = PRODUCTS.find(x => x.id === Number(id));
-
-          return `
-            <div class="cart-row">
-              <div>
-                <strong>${p.name}</strong><br>
-                <small>${p.brand} · ${money(p.price)}</small>
-              </div>
-
-              <div class="qty">
-                <button onclick="changeQty(${p.id},-1)">−</button>
-                <span>${qty}</span>
-                <button onclick="changeQty(${p.id},1)">+</button>
-              </div>
+    : entries.map(([id, qty]) => {
+        const p = PRODUCTS.find(x => x.id === Number(id));
+        return `
+          <div class="cart-row">
+            <div>
+              <strong>${p.name}</strong><br>
+              <small>${p.brand} · ${money(p.price)}</small>
             </div>
-          `;
-        })
-        .join("");
+            <div class="qty">
+              <button onclick="changeQty(${p.id},-1)">−</button>
+              <span>${qty}</span>
+              <button onclick="changeQty(${p.id},1)">+</button>
+            </div>
+          </div>
+        `;
+      }).join("");
 
   const count = entries.reduce((s, [, q]) => s + q, 0);
-
   const total = entries.reduce((s, [id, q]) => {
     const p = PRODUCTS.find(x => x.id === Number(id));
     return s + (p.price || 0) * q;
