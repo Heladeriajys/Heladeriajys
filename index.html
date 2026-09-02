@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heladería JyS | Catálogo</title>
+  <meta name="description" content="Catálogo de Heladería JyS. Venta mayorista y minorista en La Plata y alrededores.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="logo-placeholder">JyS</div>
+    <p class="eyebrow">HELADERÍA</p>
+    <h1>Catálogo JyS</h1>
+    <p class="subtitle">Mayorista y minorista · La Plata y alrededores</p>
+    <a class="primary-btn" href="#catalogo">Ver productos</a>
+  </header>
+
+  <main>
+    <section class="info">
+      <div><strong>📦 Mayorista</strong><span>Ideal para kioscos y comercios</span></div>
+      <div><strong>🛍️ Minorista</strong><span>También vendemos por unidad</span></div>
+      <div><strong>🚚 Distribución</strong><span>La Plata y alrededores</span></div>
+    </section>
+
+    <section id="catalogo" class="catalog-section">
+      <div class="section-heading">
+        <p class="eyebrow">NUESTROS PRODUCTOS</p>
+        <h2>Elegí tus productos</h2>
+        <p>Agregalos al pedido y luego envialos por WhatsApp.</p>
+      </div>
+
+      <div id="filters" class="filters"></div>
+      <div id="products" class="products-grid"></div>
+    </section>
+  </main>
+
+  <aside id="cart" class="cart">
+    <div class="cart-header">
+      <div>
+        <span class="eyebrow">TU PEDIDO</span>
+        <h2>Carrito</h2>
+      </div>
+      <button id="closeCart" class="icon-btn" aria-label="Cerrar carrito">×</button>
+    </div>
+    <div id="cartItems" class="cart-items">
+      <p class="empty">Todavía no agregaste productos.</p>
+    </div>
+    <div class="cart-footer">
+      <div class="total"><span>Total estimado</span><strong id="cartTotal">$0</strong></div>
+      <button id="whatsappBtn" class="whatsapp-btn">Enviar pedido por WhatsApp</button>
+      <small>Los precios son editables y el total se calcula automáticamente.</small>
+    </div>
+  </aside>
+
+  <button id="openCart" class="floating-cart" aria-label="Abrir carrito">
+    🛒 <span id="cartCount">0</span>
+  </button>
+
+  <footer>
+    <strong>Heladería JyS</strong>
+    <span>Mayorista y minorista · La Plata y alrededores</span>
+  </footer>
+
+  <script src="products.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
