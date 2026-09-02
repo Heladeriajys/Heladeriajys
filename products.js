@@ -29,3 +29,4 @@ const PRODUCTS = [
 {id:22, name:"Alfabom", brand:"Val-Cream", category:"Especiales", presentation:"", price:0, emoji:"🍦"},
 {id:23, name:"Palito Helado de Agua", brand:"Val-Cream", category:"Palitos", presentation:"Caja x40 unidades", price:0, emoji:"🍭"},
 {id:24, name:"Latidos", brand:"Val-Cream", category:"Especiales", presentation:"", price:0, emoji:"❤️" },
+];
