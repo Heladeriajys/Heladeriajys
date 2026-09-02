@@ -84,6 +84,7 @@ function renderProducts() {
         <div class="product-body">
           <span class="brand">${p.brand}</span>
           <h3>${p.name}</h3>
+          <div class="price">${money(p.price)}</div>
           <div class="presentation">${p.presentation || "Consultar presentación"}</div>
           <button class="add-btn" onclick="event.stopPropagation(); openProduct(${p.id})">
             Ver producto
