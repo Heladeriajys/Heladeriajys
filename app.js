@@ -1,4 +1,4 @@
-const WHATSAPP_NUMBER = "5490000000000"; // REEMPLAZAR por el número de WhatsApp de JyS.
+const WHATSAPP_NUMBER = "5492214949199"; // REEMPLAZAR por el número de WhatsApp de JyS.
 
 const productsEl = document.getElementById("products");
 const filtersEl = document.getElementById("filters");
