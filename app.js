@@ -49,7 +49,52 @@ function renderProducts(){
     </article>
   `).join("");
 }
+function openProduct(id){
+  const p = PRODUCTS.find(x => x.id === id);
+  if(!p) return;
 
+  const message = `Hola! 👋 Quiero consultar el precio de ${p.name} (${p.brand}).`;
+
+  const modal = document.createElement("div");
+  modal.id = "productModal";
+
+  modal.style.cssText = `
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:20px;
+  `;
+
+  modal.innerHTML = `
+    <div style="background:white;width:100%;max-width:420px;border-radius:24px;padding:25px;text-align:center;">
+      <button onclick="document.getElementById('productModal').remove()" style="float:right;border:0;background:none;font-size:28px;">×</button>
+
+      <div style="font-size:80px;margin:20px;">${p.emoji}</div>
+
+      <div style="color:#c76b82;font-weight:bold;">${p.brand}</div>
+
+      <h2>${p.name}</h2>
+
+      <p>${p.presentation || "Consultar presentación disponible"}</p>
+
+      <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}"
+         target="_blank"
+         style="display:block;background:#25D366;color:white;text-decoration:none;padding:15px;border-radius:14px;font-weight:bold;">
+        📲 Consultar precio por WhatsApp
+      </a>
+
+      <button onclick="document.getElementById('productModal').remove()" style="margin-top:12px;border:0;background:none;padding:10px;">
+        ← Volver al catálogo
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+}
 function save(){ localStorage.setItem("jys-cart", JSON.stringify(cart)); }
 
 function addToCart(id){
