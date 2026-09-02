@@ -1,9 +1,9 @@
 // Productos de HeladeriaJyS
 const PRODUCTS = [
-{id:1, name:"Cono", brand:"Val Cream", category:"Conos", presentation:"Presentación por caja", price:0, emoji:"🍦", image:"producto-cono.jpg"},
-{id:2, name:"Cono", brand:"May Cream", category:"Conos", presentation:"Presentación por caja", price:0, emoji:"🍦", image:"producto-cono.jpg"},
-{id:3, name:"Bombón", brand:"Val Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫", image:"producto-bombon.jpg"},
-{id:4, name:"Bombón", brand:"May Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫", image:"producto-bombon.jpg"},
+{id:1, name:"Cono", brand:"Val Cream", category:"Conos", presentation:"Presentación por caja", price:0, emoji:"🍦"},
+{id:2, name:"Cono", brand:"May Cream", category:"Conos", presentation:"Presentación por caja", price:0, emoji:"🍦", image:"producto-cono-may.jpg"},
+{id:3, name:"Bombón", brand:"Val Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫", image:"producto-bombon-val.jpg"},
+{id:4, name:"Bombón", brand:"May Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫", image:"producto-bombon-may.jpg"},
 {id:5, name:"Bombón Crocante", brand:"Val Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫", image:"producto-bombon-crocante-val.jpg"},
 {id:6, name:"Bombón Crocante", brand:"May Cream", category:"Bombones", presentation:"Caja x27 unidades", price:13650, emoji:"🍫", image:"producto-bombon-crocante-may.jpg"},
 {id:7, name:"Bombón Split", brand:"Val Cream", category:"Bombones", presentation:"Consultar presentación", price:0, emoji:"🍫", image:"producto-bombon-split.jpg"},
