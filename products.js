@@ -1,35 +1,27 @@
-// EDITÁ ESTE ARCHIVO PARA CAMBIAR PRODUCTOS, PRECIOS Y PRESENTACIONES.
-// Poné el precio como número. Si todavía no lo sabés, dejalo en 0.
-
+// Productos de HeladeriaJyS
 const PRODUCTS = [
-
-{id:1, name:"Cono", brand:"Val Cream", category:"Conos", presentation:"Presentación por caja", price:0, emoji:"🍦"},
-{id:2, name:"Cono", brand:"May Cream", category:"Conos", presentation:"Presentación por caja", price:0, emoji:"🍦"},
-
-{id:3, name:"Bombón", brand:"Val Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫"},
-{id:4, name:"Bombón", brand:"May Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫"},
-{id:5, name:"Bombón Crocante", brand:"Val Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫"},
-{id:6, name:"Bombón Crocante", brand:"May Cream", category:"Bombones", presentation:"Caja x27 unidades", price:13650, emoji:"🍫"},
-{id:7, name:"Bombón Split", brand:"Val Cream", category:"Bombones", presentation:"Consultar presentación", price:0, emoji:"🍫"},
-
+{id:1, name:"Cono", brand:"Val Cream", category:"Conos", presentation:"Presentación por caja", price:0, emoji:"🍦", image:"producto-cono.jpg"},
+{id:2, name:"Cono", brand:"May Cream", category:"Conos", presentation:"Presentación por caja", price:0, emoji:"🍦", image:"producto-cono.jpg"},
+{id:3, name:"Bombón", brand:"Val Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫", image:"producto-bombon.jpg"},
+{id:4, name:"Bombón", brand:"May Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫", image:"producto-bombon.jpg"},
+{id:5, name:"Bombón Crocante", brand:"Val Cream", category:"Bombones", presentation:"Presentación por caja", price:0, emoji:"🍫", image:"producto-bombon-crocante-val.jpg"},
+{id:6, name:"Bombón Crocante", brand:"May Cream", category:"Bombones", presentation:"Caja x27 unidades", price:13650, emoji:"🍫", image:"producto-bombon-crocante-may.jpg"},
+{id:7, name:"Bombón Split", brand:"Val Cream", category:"Bombones", presentation:"Consultar presentación", price:0, emoji:"🍫", image:"producto-bombon-split.jpg"},
 {id:8, name:"Pote 360 cc", brand:"Val Cream", category:"Potes", presentation:"360 cc", price:0, emoji:"🍨"},
 {id:9, name:"Pote 360 cc", brand:"May Cream", category:"Potes", presentation:"360 cc", price:0, emoji:"🍨"},
-{id:10, name:"Pote 1400 cc", brand:"May Cream", category:"Potes", presentation:"La unidad", price:3500, emoji:"🍨"},
-{id:11, name:"Pote 3 litros", brand:"May Cream", category:"Potes", presentation:"3 litros", price:0, emoji:"🍨"},
-
-{id:12, name:"Carita", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"😊"},
-{id:13, name:"Alfabom", brand:"May Cream", category:"Especiales", presentation:"Caja x18 unidades", price:11700, emoji:"🍦"},
-{id:14, name:"Rulo Relleno", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"🍦"},
+{id:10, name:"Pote 1400 cc", brand:"May Cream", category:"Potes", presentation:"La unidad", price:3500, emoji:"🍨", image:"producto-pote-1400.jpg"},
+{id:11, name:"Pote 3 litros", brand:"May Cream", category:"Potes", presentation:"3 litros", price:0, emoji:"🍨", image:"producto-balde-3-litros.jpg"},
+{id:12, name:"Carita", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"😊", image:"producto-carita.jpg"},
+{id:13, name:"Alfabom", brand:"May Cream", category:"Especiales", presentation:"Caja x18 unidades", price:11700, emoji:"🍦", image:"producto-alfabom-may.jpg"},
+{id:14, name:"Rulo Relleno", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"🍦", image:"producto-rulo-relleno.jpg"},
 {id:15, name:"Cassata", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"🍨"},
-{id:16, name:"Palito Helado de Agua", brand:"May Cream", category:"Palitos", presentation:"Presentación por caja", price:0, emoji:"🍭"},
-
+{id:16, name:"Palito Helado de Agua", brand:"May Cream", category:"Palitos", presentation:"Presentación por caja", price:0, emoji:"🍭", image:"producto-palito-agua-may.jpg"},
 {id:17, name:"Crema", brand:"May Cream", category:"Potes", presentation:"", price:0, emoji:"🍦"},
 {id:18, name:"Torneado Doble", brand:"May Cream", category:"Especiales", presentation:"", price:0, emoji:"🍦"},
 {id:19, name:"Copón", brand:"May Cream", category:"Especiales", presentation:"", price:0, emoji:"🍨"},
 {id:20, name:"Bombón Corazón", brand:"May Cream", category:"Bombones", presentation:"", price:0, emoji:"❤️"},
-{id:21, name:"Granizados", brand:"May Cream", category:"Especiales", presentation:"", price:0, emoji:"🍫"},
+{id:21, name:"Granizados", brand:"May Cream", category:"Especiales", presentation:"", price:0, emoji:"🍫", image:"producto-granizados.jpg"},
 {id:22, name:"Alfabom", brand:"Val Cream", category:"Especiales", presentation:"", price:0, emoji:"🍦"},
 {id:23, name:"Palito Helado de Agua", brand:"Val Cream", category:"Palitos", presentation:"Caja x40 unidades", price:0, emoji:"🍭"},
 {id:24, name:"Latidos", brand:"Val Cream", category:"Especiales", presentation:"", price:0, emoji:"❤️"},
-
 ];
