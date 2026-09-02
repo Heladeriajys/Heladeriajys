@@ -17,7 +17,7 @@ const PRODUCTS = [
   { id:11, name:"Pote 3 litros", brand:"May Cream", category:"Potes", presentation:"3 litros", price:0, emoji:"🍨" },
 
   { id:12, name:"Carita", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"😊" },
-  { id:13, name:"Alfabom", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"🍫" },
+  {id:13, name:"Alfabom", brand:"May Cream", category:"Especiales", presentation:"Caja x18 unidades", price:11700, emoji:"🍦"},
   { id:14, name:"Rulo Relleno", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"🍦" },
   { id:15, name:"Cassata", brand:"May Cream", category:"Especiales", presentation:"Presentación por caja", price:0, emoji:"🍰" },
   { id:16, name:"Palito Helado de Agua", brand:"May Cream", category:"Palitos", presentation:"Presentación por caja", price:0, emoji:"🍧" },
