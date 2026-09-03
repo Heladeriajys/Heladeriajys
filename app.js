@@ -3,7 +3,6 @@ const filtersEl = document.getElementById("filters");
 const cartItemsEl = document.getElementById("cartItems");
 const cartTotalEl = document.getElementById("cartTotal");
 const cartCountEl = document.getElementById("cartCount");
-const openCartBtn = document.getElementById("openCart");
 const closeCartBtn = document.getElementById("closeCart");
 const whatsappBtn = document.getElementById("whatsappBtn");
 
@@ -38,6 +37,22 @@ const money = n =>
 
 function categories() {
   return ["Todos", ...new Set(PRODUCTS.map(p => p.category))];
+}
+
+function openCartModal() {
+  const cartModal = document.getElementById("cartModal") || document.querySelector(".cart-sidebar");
+  if (cartModal) {
+    cartModal.classList.add("open");
+    cartModal.classList.add("active");
+  }
+}
+
+function closeCartModal() {
+  const cartModal = document.getElementById("cartModal") || document.querySelector(".cart-sidebar");
+  if (cartModal) {
+    cartModal.classList.remove("open");
+    cartModal.classList.remove("active");
+  }
 }
 
 function renderFilters() {
@@ -88,13 +103,7 @@ function addToCart(id) {
   cart[id] = (cart[id] || 0) + 1;
   saveCart();
   renderCart();
-
-  // Abre el carrito automáticamente al presionar el botón
-  const cartModal = document.getElementById("cartModal");
-  if (cartModal) {
-    cartModal.classList.add("open");
-    cartModal.classList.add("active");
-  }
+  openCartModal();
 }
 
 function removeFromCart(id) {
@@ -146,27 +155,17 @@ function renderCart() {
   }
 
   if (cartTotalEl) cartTotalEl.textContent = money(total);
-  if (cartCountEl) cartCountEl.textContent = count;
-}
+  if (cartCountEl) cartCountEl.textContent = ` (${count})`;
 
-if (openCartBtn) {
-  openCartBtn.onclick = () => {
-    const cartModal = document.getElementById("cartModal");
-    if (cartModal) {
-      cartModal.classList.add("open");
-      cartModal.classList.add("active");
-    }
-  };
+  // Configurar botones que abren el carrito en la cabecera
+  const headerCartBtns = document.querySelectorAll(".cart-btn-header, #openCart");
+  headerCartBtns.forEach(btn => {
+    btn.onclick = openCartModal;
+  });
 }
 
 if (closeCartBtn) {
-  closeCartBtn.onclick = () => {
-    const cartModal = document.getElementById("cartModal");
-    if (cartModal) {
-      cartModal.classList.remove("open");
-      cartModal.classList.remove("active");
-    }
-  };
+  closeCartBtn.onclick = closeCartModal;
 }
 
 if (whatsappBtn) {
