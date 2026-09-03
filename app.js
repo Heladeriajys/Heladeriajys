@@ -30,10 +30,10 @@ const IMAGE_BY_ID = {
   10: "foto-pote-1400-may.jpg",
   11: "foto-pote-3-litros-may.jpg",
   12: "foto-carita-may.jpg",
-  13: "foto-alfabom-may.jpg":ñ,
-  14: "foto-rulito-may.jpg";ñ,
+  13: "foto-alfabom-may.jpg",
+  14: "foto-rulito-may.jpg",
   15: "foto-cassata-may.jpg",
-  16: "foto-agua-may.jpg";ñ,
+  16: "foto-agua-may.jpg",
   17: "foto-crema-may.jpg",
   18: "foto-torneado-may.jpg",
   19: "foto-copon-may.jpg",
@@ -104,6 +104,10 @@ function renderProducts() {
     `
     )
     .join("");
+}
+
+function openProduct(id) {
+  const p = PRODUCTS.find(x => x.id === id);
 }
 
 function openProduct(id) {
