@@ -7,7 +7,11 @@ const closeCartBtn = document.getElementById("closeCart");
 const whatsappBtn = document.getElementById("whatsappBtn");
 const searchInput = document.getElementById("searchInput");
 const paymentMethodEl = document.getElementById("paymentMethod");
+const deliveryAddressEl = document.getElementById("deliveryAddress");
+const orderNotesEl = document.getElementById("orderNotes");
+const minAmountNoticeEl = document.getElementById("minAmountNotice");
 
+const MIN_ORDER_AMOUNT = 35000;
 let currentCategory = "Todos";
 let searchQuery = "";
 let cart = JSON.parse(localStorage.getItem("jys-cart")) || {};
@@ -36,7 +40,7 @@ const IMAGE_BY_ID = {
 };
 
 const money = n =>
-  n ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(n) : "";
+  n ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(n) : "$0";
 
 function categories() {
   return ["Todos", ...new Set(PRODUCTS.map(p => p.category))];
@@ -176,6 +180,28 @@ function renderCart() {
   if (cartTotalEl) cartTotalEl.textContent = money(total);
   if (cartCountEl) cartCountEl.textContent = ` (${count})`;
 
+  // Control del mínimo de compra
+  if (minAmountNoticeEl && whatsappBtn) {
+    if (total >= MIN_ORDER_AMOUNT) {
+      minAmountNoticeEl.style.background = "#d4edda";
+      minAmountNoticeEl.style.color = "#155724";
+      minAmountNoticeEl.style.borderColor = "#c3e6cb";
+      minAmountNoticeEl.textContent = "¡Mínimo alcanzado!";
+      whatsappBtn.disabled = false;
+      whatsappBtn.style.opacity = "1";
+      whatsappBtn.style.cursor = "pointer";
+    } else {
+      const diff = MIN_ORDER_AMOUNT - total;
+      minAmountNoticeEl.style.background = "#ffe6e6";
+      minAmountNoticeEl.style.color = "#d9534f";
+      minAmountNoticeEl.style.borderColor = "#f5c6cb";
+      minAmountNoticeEl.textContent = `Faltan ${money(diff)} para el mínimo ($35.000)`;
+      whatsappBtn.disabled = true;
+      whatsappBtn.style.opacity = "0.5";
+      whatsappBtn.style.cursor = "not-allowed";
+    }
+  }
+
   const headerCartBtns = document.querySelectorAll(".cart-btn-header, #openCart");
   headerCartBtns.forEach(btn => {
     btn.onclick = openCartModal;
@@ -191,25 +217,43 @@ if (whatsappBtn) {
     const entries = Object.entries(cart);
     if (entries.length === 0) return alert("Tu carrito está vacío.");
 
+    let total = 0;
+    entries.forEach(([idStr, qty]) => {
+      const p = PRODUCTS.find(prod => prod.id === Number(idStr));
+      if (p) total += p.price * qty;
+    });
+
+    if (total < MIN_ORDER_AMOUNT) {
+      return alert(`El monto mínimo de compra es de $35.000. Te faltan ${money(MIN_ORDER_AMOUNT - total)}.`);
+    }
+
+    const address = deliveryAddressEl ? deliveryAddressEl.value.trim() : "";
     const payment = paymentMethodEl ? paymentMethodEl.value : "No especificada";
+    const notes = orderNotesEl ? orderNotesEl.value.trim() : "";
+
+    if (!address) {
+      return alert("Por favor, ingresá tu dirección de entrega antes de enviar.");
+    }
 
     let message = "¡Hola! Quisiera realizar el siguiente pedido:\n\n";
-    let total = 0;
 
     entries.forEach(([idStr, qty]) => {
       const id = Number(idStr);
       const product = PRODUCTS.find(p => p.id === id);
       if (product) {
         const subtotal = product.price * qty;
-        total += subtotal;
         message += `• ${product.name} x${qty} - ${money(subtotal)}\n`;
       }
     });
 
-    message += `\n*Forma de Pago:* ${payment}`;
     message += `\n*Total:* ${money(total)}`;
+    message += `\n*Forma de Pago:* ${payment}`;
+    message += `\n*Dirección:* ${address}`;
+    if (notes) {
+      message += `\n*Notas:* ${notes}`;
+    }
 
-    const phone = "5492214949199"; // Número corregido
+    const phone = "5492214949199";
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
