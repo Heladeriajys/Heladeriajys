@@ -92,6 +92,7 @@ function renderProducts() {
       <div class="product-info">
         <span class="product-category">${p.category}</span>
         <h3 class="product-name">${p.name}</h3>
+        ${p.boxCount ? `<div class="product-box-count" style="font-size: 0.85rem; color: #666; font-weight: bold; margin-bottom: 4px;">📦 ${p.boxCount}</div>` : ""}
         <p class="product-price">${money(p.price)}</p>
         <button class="add-to-cart-btn" onclick="addToCart(${p.id})">Agregar al carrito</button>
       </div>
@@ -142,6 +143,7 @@ function renderCart() {
         <div class="cart-item">
           <div>
             <strong>${product.name}</strong>
+            ${product.boxCount ? `<div style="font-size:0.8rem; color:#777;">(${product.boxCount})</div>` : ""}
             <div>${money(product.price)} x ${qty} = ${money(subtotal)}</div>
           </div>
           <div class="cart-controls">
@@ -157,7 +159,6 @@ function renderCart() {
   if (cartTotalEl) cartTotalEl.textContent = money(total);
   if (cartCountEl) cartCountEl.textContent = ` (${count})`;
 
-  // Configurar botones que abren el carrito en la cabecera
   const headerCartBtns = document.querySelectorAll(".cart-btn-header, #openCart");
   headerCartBtns.forEach(btn => {
     btn.onclick = openCartModal;
@@ -182,7 +183,8 @@ if (whatsappBtn) {
       if (product) {
         const subtotal = product.price * qty;
         total += subtotal;
-        message += `• ${product.name} x${qty} - ${money(subtotal)}\n`;
+        const boxInfo = product.boxCount ? ` (${product.boxCount})` : "";
+        message += `• ${product.name}${boxInfo} x${qty} - ${money(subtotal)}\n`;
       }
     });
 
