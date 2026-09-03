@@ -23,7 +23,8 @@ const IMAGE_BY_ID = {
   7: "foto-bombon-split.jpg",
   9: "foto-pote-360-may.jpg",
   10: "foto-pote-1400-may.jpg",
-  11: "foto-pote-3-litros-may.jpg",
+  11: "pote3lmay.jpg",
+  
   12: "foto-carita-may.jpg",
   13: "foto-alfabom-may.jpg",
   14: "foto-rulito-may.jpg",
