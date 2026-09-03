@@ -33,6 +33,7 @@ const IMAGE_BY_ID = {
   18: "foto-torneado-may.jpg",
   19: "foto-copon-may.jpg",
   23: "foto-agua-val.jpg",
+  
   25: "foto-balde-5-litros.jpg"
 };
 
