@@ -1,8 +1,5 @@
-const WHATSAPP_NUMBER = "5492214949199";
-
 const productsEl = document.getElementById("products");
 const filtersEl = document.getElementById("filters");
-const cartEl = document.getElementById("cart");
 const cartItemsEl = document.getElementById("cartItems");
 const cartTotalEl = document.getElementById("cartTotal");
 const cartCountEl = document.getElementById("cartCount");
@@ -11,7 +8,7 @@ const closeCartBtn = document.getElementById("closeCart");
 const whatsappBtn = document.getElementById("whatsappBtn");
 
 let currentCategory = "Todos";
-let cart = JSON.parse(localStorage.getItem("jys-cart") || "{}");
+let cart = JSON.parse(localStorage.getItem("jys-cart")) || {};
 
 const IMAGE_BY_ID = {
   1: "foto-cono-val.jpg",
@@ -24,7 +21,6 @@ const IMAGE_BY_ID = {
   9: "foto-pote-360-may.jpg",
   10: "foto-pote-1400-may.jpg",
   11: "pote3lmay.jpg",
-  
   12: "foto-carita-may.jpg",
   13: "foto-alfabom-may.jpg",
   14: "foto-rulito-may.jpg",
@@ -34,12 +30,11 @@ const IMAGE_BY_ID = {
   18: "foto-torneado-may.jpg",
   19: "foto-copon-may.jpg",
   23: "foto-agua-val.jpg",
-  
   25: "foto-balde-5-litros.jpg"
 };
 
 const money = n =>
-  n ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(n) : "Consultar";
+  n ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(n) : "";
 
 function categories() {
   return ["Todos", ...new Set(PRODUCTS.map(p => p.category))];
@@ -48,7 +43,7 @@ function categories() {
 function renderFilters() {
   if (!filtersEl) return;
   filtersEl.innerHTML = categories()
-    .map(c => `<button class="filter ${c === currentCategory ? "active" : ""}" data-category="${c}">${c}</button>`)
+    .map(c => `<button class="filter ${c === currentCategory ? "active" : ""}">${c}</button>`)
     .join("");
 
   filtersEl.querySelectorAll(".filter").forEach(btn => {
@@ -63,37 +58,36 @@ function renderFilters() {
 function productImage(p) {
   const image = IMAGE_BY_ID[p.id];
   return image
-    ? `<img src="${image}" alt="${p.name}" class="product-photo" style="width:100%;height:140px;object-fit:contain;padding:8px;">`
+    ? `<img src="${image}" alt="${p.name}" class="product-photo" style="width:100%; height:auto; object-fit:cover;">`
     : (p.emoji || "🍦");
 }
 
 function renderProducts() {
   if (!productsEl) return;
-  const list = currentCategory === "Todos" ? PRODUCTS : PRODUCTS.filter(p => p.category === currentCategory);
 
-  productsEl.innerHTML = list
-    .map(
-      p => `
-      <article class="product-card" style="border:1px solid #ddd; padding:12px; border-radius:8px; text-align:center;">
-        <div class="product-image">${productImage(p)}</div>
-        <div class="product-body">
-          <small>${p.brand}</small>
-          <h3 style="margin:4px 0;">${p.name}</h3>
-          <div><strong>${money(p.price)}</strong></div>
-          <button onclick="addToCart(${p.id})" style="margin-top:8px; padding:6px 12px; cursor:pointer;">
-            Agregar al pedido
-          </button>
-        </div>
-      </article>
-    `
-    )
-    .join("");
+  const list = currentCategory === "Todos"
+    ? PRODUCTS
+    : PRODUCTS.filter(p => p.category === currentCategory);
+
+  productsEl.innerHTML = list.map(p => `
+    <div class="product-card">
+      <div class="product-image-container">
+        ${productImage(p)}
+      </div>
+      <div class="product-info">
+        <span class="product-category">${p.category}</span>
+        <h3 class="product-name">${p.name}</h3>
+        <p class="product-price">${money(p.price)}</p>
+        <button class="add-to-cart-btn" onclick="addToCart(${p.id})">Agregar al pedido</button>
+      </div>
+    </div>
+  `).join("");
 }
 
 function addToCart(id) {
   cart[id] = (cart[id] || 0) + 1;
   saveCart();
-  updateCart();
+  renderCart();
 }
 
 function removeFromCart(id) {
@@ -102,70 +96,82 @@ function removeFromCart(id) {
     if (cart[id] <= 0) delete cart[id];
   }
   saveCart();
-  updateCart();
+  renderCart();
 }
 
 function saveCart() {
   localStorage.setItem("jys-cart", JSON.stringify(cart));
 }
 
-function updateCart() {
+function renderCart() {
+  if (!cartItemsEl) return;
+
+  const entries = Object.entries(cart);
   let total = 0;
   let count = 0;
-  let itemsHtml = "";
 
-  Object.keys(cart).forEach(id => {
-    const p = PRODUCTS.find(x => x.id === Number(id));
-    if (p) {
-      const qty = cart[id];
-      const subtotal = (p.price || 0) * qty;
+  if (entries.length === 0) {
+    cartItemsEl.innerHTML = "<p class='empty-cart'>Tu carrito está vacío</p>";
+  } else {
+    cartItemsEl.innerHTML = entries.map(([idStr, qty]) => {
+      const id = Number(idStr);
+      const product = PRODUCTS.find(p => p.id === id);
+      if (!product) return "";
+
+      const subtotal = product.price * qty;
       total += subtotal;
       count += qty;
 
-      itemsHtml += `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      return `
+        <div class="cart-item">
           <div>
-            <strong>${p.name}</strong><br>
-            <small>${money(p.price)} x ${qty}</small>
+            <strong>${product.name}</strong>
+            <div>${money(product.price)} x ${qty} = ${money(subtotal)}</div>
           </div>
-          <div>
-            <button onclick="removeFromCart(${p.id})">-</button>
-            <span style="margin:0 4px;">${qty}</span>
-            <button onclick="addToCart(${p.id})">+</button>
+          <div class="cart-controls">
+            <button onclick="removeFromCart(${id})">-</button>
+            <span>${qty}</span>
+            <button onclick="addToCart(${id})">+</button>
           </div>
         </div>
       `;
-    }
-  });
+    }).join("");
+  }
 
-  if (cartItemsEl) cartItemsEl.innerHTML = itemsHtml || "<p>Todavía no agregaste productos.</p>";
   if (cartTotalEl) cartTotalEl.textContent = money(total);
   if (cartCountEl) cartCountEl.textContent = count;
 }
 
-function sendWhatsApp() {
-  let text = "¡Hola! Quisiera realizar el siguiente pedido en HeladeríaJyS:\n\n";
-  let total = 0;
+if (openCartBtn) openCartBtn.onclick = () => document.getElementById("cartModal").classList.add("open");
+if (closeCartBtn) closeCartBtn.onclick = () => document.getElementById("cartModal").classList.remove("open");
 
-  Object.keys(cart).forEach(id => {
-    const p = PRODUCTS.find(x => x.id === Number(id));
-    if (p) {
-      const qty = cart[id];
-      const subtotal = (p.price || 0) * qty;
-      total += subtotal;
-      text += `• ${qty}x ${p.name} (${p.brand}) - ${money(subtotal)}\n`;
-    }
-  });
+if (whatsappBtn) {
+  whatsappBtn.onclick = () => {
+    const entries = Object.entries(cart);
+    if (entries.length === 0) return alert("Tu carrito está vacío.");
 
-  text += `\n*Total estimado: ${money(total)}*`;
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, "_blank");
+    let message = "¡Hola! Quisiera realizar el siguiente pedido:\n\n";
+    let total = 0;
+
+    entries.forEach(([idStr, qty]) => {
+      const id = Number(idStr);
+      const product = PRODUCTS.find(p => p.id === id);
+      if (product) {
+        const subtotal = product.price * qty;
+        total += subtotal;
+        message += `• ${product.name} x${qty} - ${money(subtotal)}\n`;
+      }
+    });
+
+    message += `\n*Total:* ${money(total)}`;
+
+    const phone = "5492213524121";
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  };
 }
 
-if (openCartBtn && cartEl) openCartBtn.onclick = () => cartEl.classList.add("active");
-if (closeCartBtn && cartEl) closeCartBtn.onclick = () => cartEl.classList.remove("active");
-if (whatsappBtn) whatsappBtn.onclick = sendWhatsApp;
-
+// Inicialización
 renderFilters();
 renderProducts();
-updateCart();
-      
+renderCart();
