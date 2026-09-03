@@ -159,9 +159,10 @@ header p {
   justify-content: space-between;
 }
 
-.product-image {
+.product-image-container {
   background-color: #fff8f6;
   border-radius: 12px;
+  overflow: hidden;
   height: 130px;
   display: flex;
   align-items: center;
@@ -169,35 +170,47 @@ header p {
   margin-bottom: 10px;
 }
 
-.product-body small {
+.product-info small, .product-category {
   color: var(--text-muted);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.product-body h3 {
+.product-info h3, .product-name {
   font-size: 0.95rem;
   color: var(--text-dark);
   margin: 4px 0 6px 0;
 }
 
-.product-body strong {
+.product-price {
   color: var(--text-dark);
   font-size: 1.05rem;
+  font-weight: bold;
 }
 
-.product-body button {
+/* BOTÓN DE AGREGAR AL CARRITO (Rosita y redondeado) */
+.add-to-cart-btn {
   width: 100%;
-  background-color: #fcebe8;
-  color: var(--text-dark);
+  background-color: var(--primary-pink);
+  color: white;
   border: none;
-  padding: 8px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 25px;
   font-weight: 700;
   font-size: 0.8rem;
   margin-top: 10px;
   cursor: pointer;
+  box-shadow: var(--shadow-light);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: var(--primary-pink-hover);
+}
+
+.add-to-cart-btn:active {
+  transform: scale(0.96);
 }
 
 /* Footer Barra Flotante */
@@ -231,7 +244,7 @@ footer {
   padding: 20px;
 }
 
-.cart-sidebar.active {
+.cart-sidebar.active, .cart-sidebar.open {
   right: 0;
 }
 
