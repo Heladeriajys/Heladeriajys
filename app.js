@@ -5,8 +5,11 @@ const cartTotalEl = document.getElementById("cartTotal");
 const cartCountEl = document.getElementById("cartCount");
 const closeCartBtn = document.getElementById("closeCart");
 const whatsappBtn = document.getElementById("whatsappBtn");
+const searchInput = document.getElementById("searchInput");
+const paymentMethodEl = document.getElementById("paymentMethod");
 
 let currentCategory = "Todos";
+let searchQuery = "";
 let cart = JSON.parse(localStorage.getItem("jys-cart")) || {};
 
 const IMAGE_BY_ID = {
@@ -80,9 +83,18 @@ function productImage(p) {
 function renderProducts() {
   if (!productsEl) return;
 
-  const list = currentCategory === "Todos"
+  let list = currentCategory === "Todos"
     ? PRODUCTS
     : PRODUCTS.filter(p => p.category === currentCategory);
+
+  if (searchQuery.trim() !== "") {
+    list = list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  }
+
+  if (list.length === 0) {
+    productsEl.innerHTML = `<p style="grid-column: 1/-1; text-align: center; padding: 20px; color: #777;">No se encontraron productos.</p>`;
+    return;
+  }
 
   productsEl.innerHTML = list.map(p => `
     <div class="product-card">
@@ -97,6 +109,13 @@ function renderProducts() {
       </div>
     </div>
   `).join("");
+}
+
+if (searchInput) {
+  searchInput.oninput = (e) => {
+    searchQuery = e.target.value;
+    renderProducts();
+  };
 }
 
 function addToCart(id) {
@@ -172,6 +191,8 @@ if (whatsappBtn) {
     const entries = Object.entries(cart);
     if (entries.length === 0) return alert("Tu carrito está vacío.");
 
+    const payment = paymentMethodEl ? paymentMethodEl.value : "No especificada";
+
     let message = "¡Hola! Quisiera realizar el siguiente pedido:\n\n";
     let total = 0;
 
@@ -185,6 +206,7 @@ if (whatsappBtn) {
       }
     });
 
+    message += `\n*Forma de Pago:* ${payment}`;
     message += `\n*Total:* ${money(total)}`;
 
     const phone = "5492213524121";
