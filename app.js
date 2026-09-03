@@ -209,7 +209,7 @@ if (whatsappBtn) {
     message += `\n*Forma de Pago:* ${payment}`;
     message += `\n*Total:* ${money(total)}`;
 
-    const phone = "5492213524121";
+    const phone = "5492214949199"; // Número corregido
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
