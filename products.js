@@ -19,6 +19,6 @@ const PRODUCTS = [
   { id: 19, name: "Copon", brand: "May cream", price: 17500, category: "Postres", presentation: "Caja x12 unid" },
   { id: 23, name: "Palito de Agua", brand: "Val cream", price: 6000, category: "Impulsivos", presentation: "Caja x36 unid" },
   { id: 25, name: "Balde 5 Litros", brand: "May cream", price: 11000, category: "Baldes", presentation: "Unidad" },
-  { id: 26, name: "Ltidos", brand: "May cream", price: 0, category: "Infantil", presentation: "Consultar presentación" },
+  { id: 26, name: "Latidos", brand: "May cream", price: 0, category: "Infantil", presentation: "Consultar presentación" },
   { id: 27, name: "Granizados", brand: "May cream", price: 0, category: "Impulsivos", presentation: "Consultar presentación" }
 ];
