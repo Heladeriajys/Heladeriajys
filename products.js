@@ -20,3 +20,4 @@ const PRODUCTS = [
   { id: 23, name: "Palito de Agua", brand: "Valmes", price: 550, category: "Impulsivos", presentation: "Unidad" },
   { id: 25, name: "Balde 5 Litros", brand: "Mayfrit", price: 12000, category: "Baldes", presentation: "5 Litros" }
 ];
+
