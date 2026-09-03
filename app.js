@@ -13,9 +13,6 @@ const whatsappBtn = document.getElementById("whatsappBtn");
 let currentCategory = "Todos";
 let cart = JSON.parse(localStorage.getItem("jys-cart") || "{}");
 
-/*
-  FOTOS VERIFICADAS A PARTIR DE LAS IMÁGENES ORIGINALES.
-*/
 const IMAGE_BY_ID = {
   1: "foto-cono-val.jpg",
   2: "foto-cono-may.jpg",
@@ -40,13 +37,7 @@ const IMAGE_BY_ID = {
 };
 
 const money = n =>
-  n
-    ? new Intl.NumberFormat("es-AR", {
-        style: "currency",
-        currency: "ARS",
-        maximumFractionDigits: 0
-      }).format(n)
-    : "Consultar";
+  n ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(n) : "Consultar";
 
 function categories() {
   return ["Todos", ...new Set(PRODUCTS.map(p => p.category))];
@@ -55,10 +46,7 @@ function categories() {
 function renderFilters() {
   if (!filtersEl) return;
   filtersEl.innerHTML = categories()
-    .map(
-      c =>
-        `<button class="filter ${c === currentCategory ? "active" : ""}" data-category="${c}">${c}</button>`
-    )
+    .map(c => `<button class="filter ${c === currentCategory ? "active" : ""}" data-category="${c}">${c}</button>`)
     .join("");
 
   filtersEl.querySelectorAll(".filter").forEach(btn => {
@@ -72,31 +60,25 @@ function renderFilters() {
 
 function productImage(p) {
   const image = IMAGE_BY_ID[p.id];
-
   return image
-    ? `<img src="${image}" alt="${p.name} ${p.brand}" class="product-photo"
-        style="width:100%;height:100%;object-fit:contain;padding:8px;box-sizing:border-box;">`
+    ? `<img src="${image}" alt="${p.name}" class="product-photo" style="width:100%;height:140px;object-fit:contain;padding:8px;">`
     : (p.emoji || "🍦");
 }
 
 function renderProducts() {
   if (!productsEl) return;
-  const list =
-    currentCategory === "Todos"
-      ? PRODUCTS
-      : PRODUCTS.filter(p => p.category === currentCategory);
+  const list = currentCategory === "Todos" ? PRODUCTS : PRODUCTS.filter(p => p.category === currentCategory);
 
   productsEl.innerHTML = list
     .map(
       p => `
-      <article class="product-card" onclick="addToCart(${p.id})">
+      <article class="product-card" style="border:1px solid #ddd; padding:12px; border-radius:8px; text-align:center;">
         <div class="product-image">${productImage(p)}</div>
         <div class="product-body">
-          <span class="brand">${p.brand}</span>
-          <h3>${p.name}</h3>
-          <div class="price">${money(p.price)}</div>
-          <div class="presentation">${p.presentation || "Consultar presentación"}</div>
-          <button class="add-btn" onclick="event.stopPropagation(); addToCart(${p.id})">
+          <small>${p.brand}</small>
+          <h3 style="margin:4px 0;">${p.name}</h3>
+          <div><strong>${money(p.price)}</strong></div>
+          <button onclick="addToCart(${p.id})" style="margin-top:8px; padding:6px 12px; cursor:pointer;">
             Agregar al pedido
           </button>
         </div>
@@ -139,15 +121,15 @@ function updateCart() {
       count += qty;
 
       itemsHtml += `
-        <div class="cart-item" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
           <div>
             <strong>${p.name}</strong><br>
             <small>${money(p.price)} x ${qty}</small>
           </div>
-          <div style="display:flex; gap:6px; align-items:center;">
-            <button onclick="removeFromCart(${p.id})" style="padding:2px 8px;">-</button>
-            <span>${qty}</span>
-            <button onclick="addToCart(${p.id})" style="padding:2px 8px;">+</button>
+          <div>
+            <button onclick="removeFromCart(${p.id})">-</button>
+            <span style="margin:0 4px;">${qty}</span>
+            <button onclick="addToCart(${p.id})">+</button>
           </div>
         </div>
       `;
@@ -174,9 +156,7 @@ function sendWhatsApp() {
   });
 
   text += `\n*Total estimado: ${money(total)}*`;
-
-  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-  window.open(url, "_blank");
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, "_blank");
 }
 
 if (openCartBtn && cartEl) openCartBtn.onclick = () => cartEl.classList.add("active");
@@ -186,141 +166,4 @@ if (whatsappBtn) whatsappBtn.onclick = sendWhatsApp;
 renderFilters();
 renderProducts();
 updateCart();
-}
-
-function openProduct(id) {
-  const p = PRODUCTS.find(x => x.id === id);
-  if (!p) return;
-
-  const image = IMAGE_BY_ID[p.id];
-  const message = `Hola! 👋 Quiero consultar el precio de ${p.name} (${p.brand}).`;
-
-  const modal = document.createElement("div");
-  modal.id = "productModal";
-
-  modal.style.cssText = `
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.65);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-    padding:20px;
-  `;
-
-  const visual = image
-    ? `<img src="${image}" alt="${p.name} ${p.brand}"
-        style="width:100%;height:260px;object-fit:contain;border-radius:18px;background:#fff4ee;">`
-    : `<div style="font-size:80px;margin:20px;">${p.emoji || "🍦"}</div>`;
-
-  modal.innerHTML = `
-    <div style="background:white;width:100%;max-width:420px;border-radius:24px;padding:20px;text-align:center;max-height:90vh;overflow:auto;">
-      <button onclick="document.getElementById('productModal').remove()"
-        style="float:right;border:0;background:none;font-size:28px;">×</button>
-      ${visual}
-      <div style="color:#c76b82;font-weight:bold;margin-top:12px;">${p.brand}</div>
-      <h2>${p.name}</h2>
-      <p>${p.presentation || "Consultar presentación disponible"}</p>
-      <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}"
-        target="_blank"
-        style="display:block;background:#25D366;color:white;text-decoration:none;padding:15px;border-radius:14px;font-weight:bold;">
-        📲 Consultar precio por WhatsApp
-      </a>
-      <button onclick="document.getElementById('productModal').remove()"
-        style="margin-top:12px;border:0;background:none;padding:10px;">
-        ← Volver al catálogo
-      </button>
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-}
-
-function save() {
-  localStorage.setItem("jys-cart", JSON.stringify(cart));
-}
-
-function addToCart(id) {
-  cart[id] = (cart[id] || 0) + 1;
-  save();
-  renderCart();
-  cartEl.classList.add("open");
-}
-
-function changeQty(id, delta) {
-  cart[id] = (cart[id] || 0) + delta;
-  if (cart[id] <= 0) delete cart[id];
-  save();
-  renderCart();
-}
-
-function renderCart() {
-  const entries = Object.entries(cart);
-
-  cartItemsEl.innerHTML = !entries.length
-    ? `<p class="empty">Todavía no agregaste productos.</p>`
-    : entries.map(([id, qty]) => {
-        const p = PRODUCTS.find(x => x.id === Number(id));
-        return `
-          <div class="cart-row">
-            <div>
-              <strong>${p.name}</strong><br>
-              <small>${p.brand} · ${money(p.price)}</small>
-            </div>
-            <div class="qty">
-              <button onclick="changeQty(${p.id},-1)">−</button>
-              <span>${qty}</span>
-              <button onclick="changeQty(${p.id},1)">+</button>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-  const count = entries.reduce((s, [, q]) => s + q, 0);
-  const total = entries.reduce((s, [id, q]) => {
-    const p = PRODUCTS.find(x => x.id === Number(id));
-    return s + (p.price || 0) * q;
-  }, 0);
-
-  cartCountEl.textContent = count;
-  cartTotalEl.textContent = money(total);
-}
-
-function sendWhatsApp() {
-  const entries = Object.entries(cart);
-
-  if (!entries.length) {
-    alert("Agregá al menos un producto al pedido.");
-    return;
-  }
-
-  const lines = entries.map(([id, qty]) => {
-    const p = PRODUCTS.find(x => x.id === Number(id));
-    return `• ${qty} x ${p.name} (${p.brand})`;
-  });
-
-  const total = entries.reduce((s, [id, q]) => {
-    const p = PRODUCTS.find(x => x.id === Number(id));
-    return s + (p.price || 0) * q;
-  }, 0);
-
-  const text =
-    `Hola! 👋 Quiero hacer un pedido en Heladería JyS:\n\n` +
-    `${lines.join("\n")}\n\n` +
-    `Total estimado: ${money(total)}\n\n` +
-    `¿Me pasan disponibilidad y forma de entrega?`;
-
-  window.open(
-    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`,
-    "_blank"
-  );
-}
-
-openCartBtn.onclick = () => cartEl.classList.add("open");
-closeCartBtn.onclick = () => cartEl.classList.remove("open");
-whatsappBtn.onclick = sendWhatsApp;
-
-renderFilters();
-renderProducts();
-renderCart();
+      
