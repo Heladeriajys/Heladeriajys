@@ -15,8 +15,6 @@ let cart = JSON.parse(localStorage.getItem("jys-cart") || "{}");
 
 /*
   FOTOS VERIFICADAS A PARTIR DE LAS IMÁGENES ORIGINALES.
-  Si un producto no tiene una foto claramente identificada,
-  se mantiene su emoji en lugar de poner una foto equivocada.
 */
 const IMAGE_BY_ID = {
   1: "foto-cono-val.jpg",
@@ -38,7 +36,7 @@ const IMAGE_BY_ID = {
   18: "foto-torneado-may.jpg",
   19: "foto-copon-may.jpg",
   23: "foto-agua-val.jpg",
-  25: "foto-balde-5-litros.jpg",
+  25: "foto-balde-5-litros.jpg"
 };
 
 const money = n =>
@@ -55,6 +53,7 @@ function categories() {
 }
 
 function renderFilters() {
+  if (!filtersEl) return;
   filtersEl.innerHTML = categories()
     .map(
       c =>
@@ -81,6 +80,7 @@ function productImage(p) {
 }
 
 function renderProducts() {
+  if (!productsEl) return;
   const list =
     currentCategory === "Todos"
       ? PRODUCTS
@@ -89,15 +89,15 @@ function renderProducts() {
   productsEl.innerHTML = list
     .map(
       p => `
-      <article class="product-card" onclick="openProduct(${p.id})">
+      <article class="product-card" onclick="addToCart(${p.id})">
         <div class="product-image">${productImage(p)}</div>
         <div class="product-body">
           <span class="brand">${p.brand}</span>
           <h3>${p.name}</h3>
           <div class="price">${money(p.price)}</div>
           <div class="presentation">${p.presentation || "Consultar presentación"}</div>
-          <button class="add-btn" onclick="event.stopPropagation(); openProduct(${p.id})">
-            Ver producto
+          <button class="add-btn" onclick="event.stopPropagation(); addToCart(${p.id})">
+            Agregar al pedido
           </button>
         </div>
       </article>
@@ -106,8 +106,86 @@ function renderProducts() {
     .join("");
 }
 
-function openProduct(id) {
-  const p = PRODUCTS.find(x => x.id === id);
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  saveCart();
+  updateCart();
+}
+
+function removeFromCart(id) {
+  if (cart[id]) {
+    cart[id]--;
+    if (cart[id] <= 0) delete cart[id];
+  }
+  saveCart();
+  updateCart();
+}
+
+function saveCart() {
+  localStorage.setItem("jys-cart", JSON.stringify(cart));
+}
+
+function updateCart() {
+  let total = 0;
+  let count = 0;
+  let itemsHtml = "";
+
+  Object.keys(cart).forEach(id => {
+    const p = PRODUCTS.find(x => x.id === Number(id));
+    if (p) {
+      const qty = cart[id];
+      const subtotal = (p.price || 0) * qty;
+      total += subtotal;
+      count += qty;
+
+      itemsHtml += `
+        <div class="cart-item" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <strong>${p.name}</strong><br>
+            <small>${money(p.price)} x ${qty}</small>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <button onclick="removeFromCart(${p.id})" style="padding:2px 8px;">-</button>
+            <span>${qty}</span>
+            <button onclick="addToCart(${p.id})" style="padding:2px 8px;">+</button>
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  if (cartItemsEl) cartItemsEl.innerHTML = itemsHtml || "<p>Todavía no agregaste productos.</p>";
+  if (cartTotalEl) cartTotalEl.textContent = money(total);
+  if (cartCountEl) cartCountEl.textContent = count;
+}
+
+function sendWhatsApp() {
+  let text = "¡Hola! Quisiera realizar el siguiente pedido en HeladeríaJyS:\n\n";
+  let total = 0;
+
+  Object.keys(cart).forEach(id => {
+    const p = PRODUCTS.find(x => x.id === Number(id));
+    if (p) {
+      const qty = cart[id];
+      const subtotal = (p.price || 0) * qty;
+      total += subtotal;
+      text += `• ${qty}x ${p.name} (${p.brand}) - ${money(subtotal)}\n`;
+    }
+  });
+
+  text += `\n*Total estimado: ${money(total)}*`;
+
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
+}
+
+if (openCartBtn && cartEl) openCartBtn.onclick = () => cartEl.classList.add("active");
+if (closeCartBtn && cartEl) closeCartBtn.onclick = () => cartEl.classList.remove("active");
+if (whatsappBtn) whatsappBtn.onclick = sendWhatsApp;
+
+renderFilters();
+renderProducts();
+updateCart();
 }
 
 function openProduct(id) {
