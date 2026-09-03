@@ -19,26 +19,26 @@ let cart = JSON.parse(localStorage.getItem("jys-cart") || "{}");
   se mantiene su emoji en lugar de poner una foto equivocada.
 */
 const IMAGE_BY_ID = {
-  1: "foto-cono-val.jpg";
-  2: "foto-cono-may.jpg";
-  3: "foto-bombon-val.jpg";
-  4: "foto-bombon-may.jpg";
-  5: "foto-bombon-crocante-val.jpg";
-  6: "foto-bombon-crocante-may.jpg":
-  7: "foto-bombon-split.jpg";
-  9: "foto-pote-360-may.jpg";
-  10: "foto-pote-1400-may.jpg";
-  11: "foto-pote-3-litros-may.jpg";
-  12: "foto-carita-may.jpg";
-  13: "foto-alfabom-may.jpg":
-  14: "foto-rulito-may.jpg";
-  15: "foto-cassata-may.jpg";
-  16: "foto-agua-may.jpg";
-  17: "foto-crema-may.jpg";
-  18: "foto-torneado-may.jpg";
-  19: "foto-copon-may.jpg";
-  23: "foto-agua-val.jpg";
-  25: "foto-balde-5-litros.jpg";
+  1: "foto-cono-val.jpg",
+  2: "foto-cono-may.jpg",
+  3: "foto-bombon-val.jpg",
+  4: "foto-bombon-may.jpg",
+  5: "foto-bombon-crocante-val.jpg",
+  6: "foto-bombon-crocante-may.jpg",
+  7: "foto-bombon-split.jpg",
+  9: "foto-pote-360-may.jpg",
+  10: "foto-pote-1400-may.jpg",
+  11: "foto-pote-3-litros-may.jpg",
+  12: "foto-carita-may.jpg",
+  13: "foto-alfabom-may.jpg":ñ,
+  14: "foto-rulito-may.jpg";ñ,
+  15: "foto-cassata-may.jpg",
+  16: "foto-agua-may.jpg";ñ,
+  17: "foto-crema-may.jpg",
+  18: "foto-torneado-may.jpg",
+  19: "foto-copon-may.jpg",
+  23: "foto-agua-val.jpg",
+  25: "foto-balde-5-litros.jpg",
 };
 
 const money = n =>
