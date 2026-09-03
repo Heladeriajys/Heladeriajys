@@ -25,13 +25,14 @@ const IMAGE_BY_ID = {
   13: "foto-alfabom-may.jpg",
   14: "foto-rulito-may.jpg",
   15: "foto-cassata-may.jpg",
-  16: "foto-agua-may.jpg",
+  16: "palito-agua-may.jpg",
   17: "foto-crema-may.jpg",
   18: "foto-torneado-may.jpg",
   19: "foto-copon-may.jpg",
   23: "foto-agua-val.jpg",
   25: "foto-balde-5-litros.jpg"
 };
+
 
 const money = n =>
   n ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(n) : "";
