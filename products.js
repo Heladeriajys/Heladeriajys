@@ -1,24 +1,122 @@
 const PRODUCTS = [
-  { id: 1, name: "Cono Helado", brand: "Val cream", price: 14600, category: "Impulsivos", presentation: "Caja x12 unid" },
-  { id: 2, name: "Cono Helado", brand: "May cream", price: 13650, category: "Impulsivos", presentation: "Caja x12 unid" },
-  { id: 3, name: "Bombón Helado", brand: "Val cream", price: 14200, category: "Impulsivos", presentation: "Caja x24 unid" },
-  { id: 4, name: "Bombón Helado", brand: "May cream", price: 13650, category: "Impulsivos", presentation: "Caja x30 unid" },
-  { id: 5, name: "Bombón Crocante", brand: "Val cream", price: 14200, category: "Impulsivos", presentation: "Caja x24 unid" },
-  { id: 6, name: "Bombón Crocante", brand: "May cream", price: 13650, category: "Impulsivos", presentation: "Caja x27 unid" },
-  { id: 7, name: "Bombón Split", brand: "May cream", price: 13650, category: "Impulsivos", presentation: "Caja x30 unid" },
-  { id: 9, name: "Pote 360cc", brand: "May cream", price: 12300, category: "Hogar", presentation: "Pack x12 unid" },
-  { id: 10, name: "Pote 1400cc", brand: "May cream", price: 3500, category: "Hogar", presentation: "Unidad" },
-  { id: 11, name: "Pote 3 Litros", brand: "May cream", price: 8000, category: "Hogar", presentation: "Unidad" },
-  { id: 12, name: "Caritas", brand: "May cream", price: 0, category: "Infantil", presentation: "Consultar presentation" },
-  { id: 13, name: "Alfabom", brand: "May cream", price: 11700, category: "Impulsivos", presentation: "Caja x18 unid" },
-  { id: 14, name: "Rulo Rellenos", brand: "May cream", price: 0, category: "Infantil", presentation: "Consultar presentación" },
-  { id: 15, name: "Cassatas", brand: "May cream", price: 14500, category: "Postres", presentation: "Caja x12 unid" },
-  { id: 16, name: "Palito de Agua", brand: "May cream", price: 5200, category: "Impulsivos", presentation: "Caja x40 unid" },
-  { id: 17, name: "Palito de Crema", brand: "May cream", price: 8200, category: "Impulsivos", presentation: "Caja x30 unid" },
-  { id: 18, name: "Torneados", brand: "May cream", price: 5750, category: "Impulsivos", presentation: "Caja x24 unid" },
-  { id: 19, name: "Copon", brand: "May cream", price: 17500, category: "Postres", presentation: "Caja x12 unid" },
-  { id: 23, name: "Palito de Agua", brand: "Val cream", price: 6000, category: "Impulsivos", presentation: "Caja x36 unid" },
-  { id: 25, name: "Balde 5 Litros", brand: "May cream", price: 11000, category: "Baldes", presentation: "Unidad" },
-  { id: 26, name: "Latidos", brand: "May cream", price: 0, category: "Infantil", presentation: "Consultar presentación" },
-  { id: 27, name: "Granizados", brand: "May cream", price: 0, category: "Impulsivos", presentation: "Consultar presentación" }
+  {
+    id: 16,
+    name: 'Agua "May Cream"',
+    price: 5200,
+    category: "Impulsivos",
+    boxCount: "Caja x 40 unid."
+  },
+  {
+    id: 23,
+    name: 'Agua "Val Cream"',
+    price: 6000,
+    category: "Impulsivos",
+    boxCount: "Caja x 36 unid."
+  },
+  {
+    id: 17,
+    name: 'Crema "May Cream"',
+    price: 8200,
+    category: "Impulsivos",
+    boxCount: "Caja x 30 unid."
+  },
+  {
+    id: 4,
+    name: 'Bombón "May Cream"',
+    price: 13650,
+    category: "Impulsivos",
+    boxCount: "Caja x 30 unid."
+  },
+  {
+    id: 6,
+    name: 'Bombón Crocante "May Cream"',
+    price: 13650,
+    category: "Impulsivos",
+    boxCount: "Caja x 27 unid."
+  },
+  {
+    id: 3,
+    name: 'Bombón "Val Cream"',
+    price: 14200,
+    category: "Impulsivos",
+    boxCount: "Caja x 24 unid."
+  },
+  {
+    id: 5,
+    name: 'Bombón Crocante "Val Cream"',
+    price: 14200,
+    category: "Impulsivos",
+    boxCount: "Caja x 24 unid."
+  },
+  {
+    id: 1,
+    name: 'Cono "Val Cream"',
+    price: 14600,
+    category: "Impulsivos",
+    boxCount: "Caja x 12 unid."
+  },
+  {
+    id: 2,
+    name: 'Cono "May Cream"',
+    price: 13650,
+    category: "Impulsivos",
+    boxCount: "Caja x 12 unid."
+  },
+  {
+    id: 18,
+    name: "Torneados",
+    price: 5750,
+    category: "Impulsivos",
+    boxCount: "Caja x 24 unid."
+  },
+  {
+    id: 9,
+    name: 'Pote 360cc "May Cream"',
+    price: 12300,
+    category: "Hogar",
+    boxCount: "Pack x 12 unid."
+  },
+  {
+    id: 10,
+    name: "Pote 1400cc",
+    price: 3500,
+    category: "Hogar",
+    boxCount: "Por unidad"
+  },
+  {
+    id: 11,
+    name: "Balde 3 litros",
+    price: 8000,
+    category: "Hogar",
+    boxCount: "Por unidad"
+  },
+  {
+    id: 25,
+    name: "Balde 5 litros",
+    price: 11000,
+    category: "Hogar",
+    boxCount: "Por unidad"
+  },
+  {
+    id: 19,
+    name: 'Copón "May Cream"',
+    price: 17500,
+    category: "Impulsivos",
+    boxCount: "Caja x 12 unid."
+  },
+  {
+    id: 15,
+    name: "Cassattas",
+    price: 14500,
+    category: "Hogar",
+    boxCount: "Caja x 12 unid."
+  },
+  {
+    id: 13,
+    name: "Alfabom",
+    price: 11700,
+    category: "Impulsivos",
+    boxCount: "Caja x 18 unid."
+  }
 ];
+
