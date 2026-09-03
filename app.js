@@ -78,7 +78,7 @@ function renderProducts() {
         <span class="product-category">${p.category}</span>
         <h3 class="product-name">${p.name}</h3>
         <p class="product-price">${money(p.price)}</p>
-        <button class="add-to-cart-btn" onclick="addToCart(${p.id})">Agregar al pedido</button>
+        <button class="add-to-cart-btn" onclick="addToCart(${p.id})">Agregar al carrito</button>
       </div>
     </div>
   `).join("");
