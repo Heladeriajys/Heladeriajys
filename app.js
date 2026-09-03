@@ -43,7 +43,7 @@ function categories() {
 function renderFilters() {
   if (!filtersEl) return;
   filtersEl.innerHTML = categories()
-    .map(c => `<button class="filter ${c === currentCategory ? "active" : ""}">${c}</button>`)
+    .map(c => `<button class="filter ${c === currentCategory ? "active" : ""}" data-category="${c}">${c}</button>`)
     .join("");
 
   filtersEl.querySelectorAll(".filter").forEach(btn => {
@@ -88,6 +88,13 @@ function addToCart(id) {
   cart[id] = (cart[id] || 0) + 1;
   saveCart();
   renderCart();
+
+  // Abre el carrito automáticamente al presionar el botón
+  const cartModal = document.getElementById("cartModal");
+  if (cartModal) {
+    cartModal.classList.add("open");
+    cartModal.classList.add("active");
+  }
 }
 
 function removeFromCart(id) {
@@ -142,8 +149,25 @@ function renderCart() {
   if (cartCountEl) cartCountEl.textContent = count;
 }
 
-if (openCartBtn) openCartBtn.onclick = () => document.getElementById("cartModal").classList.add("open");
-if (closeCartBtn) closeCartBtn.onclick = () => document.getElementById("cartModal").classList.remove("open");
+if (openCartBtn) {
+  openCartBtn.onclick = () => {
+    const cartModal = document.getElementById("cartModal");
+    if (cartModal) {
+      cartModal.classList.add("open");
+      cartModal.classList.add("active");
+    }
+  };
+}
+
+if (closeCartBtn) {
+  closeCartBtn.onclick = () => {
+    const cartModal = document.getElementById("cartModal");
+    if (cartModal) {
+      cartModal.classList.remove("open");
+      cartModal.classList.remove("active");
+    }
+  };
+}
 
 if (whatsappBtn) {
   whatsappBtn.onclick = () => {
