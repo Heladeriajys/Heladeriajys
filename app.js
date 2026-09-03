@@ -33,7 +33,6 @@ const IMAGE_BY_ID = {
   25: "foto-balde-5-litros.jpg"
 };
 
-
 const money = n =>
   n ? new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(n) : "";
 
