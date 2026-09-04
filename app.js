@@ -36,7 +36,8 @@ const IMAGE_BY_ID = {
   18: "foto-rulito-may.jpg",
   19: "foto-copon-may.jpg",
   23: "foto-agua-val.jpg",
-  25: "foto-balde-5-litros.jpg"
+  25: "foto-balde-5-litros.jpg",
+  26: "foto-mini-bombon-val.jpg"
 };
 
 const money = n =>
@@ -263,3 +264,4 @@ if (whatsappBtn) {
 renderFilters();
 renderProducts();
 renderCart();
+      
