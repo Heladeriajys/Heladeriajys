@@ -13,6 +13,7 @@ const PRODUCTS = [
   { id: 10, name: 'Pote 1400cc (Por unidad)', price: 3500, category: 'Hogar', emoji: '🍨' },
   { id: 11, name: 'Balde 3 Litros (Por unidad)', price: 8000, category: 'Hogar', emoji: '🪣' },
   { id: 25, name: 'Balde 5 Litros (Por unidad)', price: 11000, category: 'Hogar', emoji: '🪣' },
+  { id: 27, name: 'Tortas Heladas (Por unidad)', price: 14000, category: 'Postres', emoji: '🎂' },
   { id: 19, name: 'Copón "May Cream" (Caja x 12 un.)', price: 17500, category: 'Postres', emoji: '🍨' },
   { id: 15, name: 'Cassatas (Caja x 12 un.)', price: 14500, category: 'Postres', emoji: '🍰' },
   { id: 13, name: 'Alfabom (Caja x 18 un.)', price: 11700, category: 'Bombones', emoji: '🍪' },
