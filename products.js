@@ -1,6 +1,6 @@
 const PRODUCTS = [
   { id: 16, name: 'Agua "May Cream" (Caja x 40 un.)', price: 5200, category: 'Impulsivos', emoji: '🍦' },
-  { id: 17, name: 'Crema "May Cream" (Caja x 30 un.)', price: 8200, category: 'Impulsivos', emoji: '🍦' },
+  { id: 17, name: 'Crema "Val Cream" (Caja x 30 un.)', price: 8200, category: 'Impulsivos', emoji: '🍦' },
   { id: 26, name: 'Mini Bombón "Val Cream" (Caja x 24 un.)', price: 12000, category: 'Bombones', emoji: '🍫' },
   { id: 4, name: 'Bombón "May Cream" (Caja x 30 un.)', price: 13650, category: 'Bombones', emoji: '🍫' },
   { id: 6, name: 'Bombón Crocante "May Cream" (Caja x 27 un.)', price: 13650, category: 'Bombones', emoji: '🍫' },
