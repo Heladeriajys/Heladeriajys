@@ -36,7 +36,8 @@ const IMAGE_BY_ID = {
   18: "foto-rulito-may.jpg",
   19: "foto-copon-may.jpg",
   25: "foto-balde-5-litros.jpg",
-  26: "foto-mini-bombon-val.jpg"
+  26: "foto-mini-bombon-val.jpg",
+  27: "foto-tortas-heladas.jpg"
 };
 
 const money = n =>
