@@ -18,5 +18,5 @@ const PRODUCTS = [
   { id: 15, name: 'Cassatas (Caja x 12 un.)', price: 14500, category: 'Postres', emoji: '🍰' },
   { id: 13, name: 'Alfabom (Caja x 18 un.)', price: 11700, category: 'Bombones', emoji: '🍪' },
   { id: 14, name: 'Rulo Relleno "May Cream" (Caja x 24 un.)', price: 12000, category: 'Impulsivos', emoji: '🌀' },
-  { id: 12, name: 'Carita "Val Cream" (Caja x 20 un.)', price: 9000, category: 'Impulsivos', emoji: '🧒' }
+  { id: 12, name: 'Carita "May Cream" (Caja x 20 un.)', price: 9000, category: 'Impulsivos', emoji: '🧒' }
 ];
