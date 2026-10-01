@@ -10,7 +10,7 @@ const PRODUCTS = [
   { id: 2, name: 'Cono "May Cream" (Caja x 12 un.)', price: 13650, category: 'Conos', emoji: '🍦' },
   { id: 18, name: 'Rulito "May Cream" (Caja x 24 un.)', price: 5750, category: 'Impulsivos', emoji: '🍦' },
   { id: 9, name: 'Pote 360cc "May Cream" (Pack x 12 un.)', price: 12300, category: 'Postres', emoji: '🍨' },
-  { id: 10, name: 'Pote 1400cc (Por unidad)', price: 3500, category: 'Hogar', emoji: '🍨' },
+  { id: 10, name: 'Pote 1400cc "May Cream" (Por unidad)', price: 3500, category: 'Hogar', emoji: '🍨' },
   { id: 11, name: 'Balde 3 Litros (Por unidad)', price: 8000, category: 'Hogar', emoji: '🪣' },
   { id: 25, name: 'Balde 5 Litros (Por unidad)', price: 11000, category: 'Hogar', emoji: '🪣' },
   { id: 27, name: 'Tortas Heladas (Por unidad)', price: 14000, category: 'Postres', emoji: '🎂' },
