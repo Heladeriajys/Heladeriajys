@@ -1,7 +1,10 @@
 const PRODUCTS = [
   { id: 16, name: 'Agua "May Cream" (Caja x 40 un.)', price: 5200, category: 'Impulsivos', emoji: '🍦' },
-  { id: 17, name: 'Crema "Val Cream" (Caja x 30 un.)', price: 8500, category: 'Impulsivos', emoji: '🍦' },
+  { id: 23, name: 'Agua "Val Cream" (Caja x 36 un.)', price: 6500, category: 'Impulsivos', emoji: '🍦' },
+  { id: 17, name: 'Crema "Val Cream" (Caja x 30 un.)', price: 8200, category: 'Impulsivos', emoji: '🍦' },
   { id: 26, name: 'Mini Bombón "Val Cream" (Caja x 24 un.)', price: 12000, category: 'Bombones', emoji: '🍫' },
+  { id: 28, name: 'Mini Bombón Crocante "Val Cream" (Caja x 24 un.)', price: 12000, category: 'Bombones', emoji: '🍫' },
+  { id: 7, name: 'Mini Bombón Split "Val Cream" (Caja x 24 un.)', price: 12000, category: 'Bombones', emoji: '🍌' },
   { id: 4, name: 'Bombón "May Cream" (Caja x 30 un.)', price: 13650, category: 'Bombones', emoji: '🍫' },
   { id: 6, name: 'Bombón Crocante "May Cream" (Caja x 27 un.)', price: 13650, category: 'Bombones', emoji: '🍫' },
   { id: 3, name: 'Bombón "Val Cream" (Caja x 24 un.)', price: 14200, category: 'Bombones', emoji: '🍫' },
@@ -10,13 +13,14 @@ const PRODUCTS = [
   { id: 2, name: 'Cono "May Cream" (Caja x 12 un.)', price: 13650, category: 'Conos', emoji: '🍦' },
   { id: 18, name: 'Rulito "May Cream" (Caja x 24 un.)', price: 5750, category: 'Impulsivos', emoji: '🍦' },
   { id: 9, name: 'Pote 360cc "May Cream" (Pack x 12 un.)', price: 12300, category: 'Postres', emoji: '🍨' },
-  { id: 10, name: 'Pote 1400cc "May Cream" (Por unidad)', price: 3500, category: 'Hogar', emoji: '🍨' },
+  { id: 10, name: 'Pote 1400cc (Por unidad)', price: 3500, category: 'Hogar', emoji: '🍨' },
   { id: 11, name: 'Balde 3 Litros (Por unidad)', price: 8000, category: 'Hogar', emoji: '🪣' },
   { id: 25, name: 'Balde 5 Litros (Por unidad)', price: 11000, category: 'Hogar', emoji: '🪣' },
   { id: 27, name: 'Tortas Heladas (Por unidad)', price: 14000, category: 'Postres', emoji: '🎂' },
   { id: 19, name: 'Copón "May Cream" (Caja x 12 un.)', price: 17500, category: 'Postres', emoji: '🍨' },
-  { id: 15, name: 'Cassatas "May Cream" (Caja x 12 un.)', price: 14500, category: 'Postres', emoji: '🍰' },
-  { id: 13, name: 'Alfabom "May Cream" (Caja x 18 un.)', price: 11700, category: 'Bombones', emoji: '🍪' },
+  { id: 15, name: 'Cassatas (Caja x 12 un.)', price: 14500, category: 'Postres', emoji: '🍰' },
+  { id: 13, name: 'Alfabom (Caja x 18 un.)', price: 11700, category: 'Bombones', emoji: '🍪' },
   { id: 14, name: 'Rulo Relleno "May Cream" (Caja x 24 un.)', price: 12000, category: 'Impulsivos', emoji: '🌀' },
-  { id: 12, name: 'Carita "May Cream" (Caja x 20 un.)', price: 9000, category: 'Impulsivos', emoji: '🧒' }
+  { id: 12, name: 'Carita "Val Cream" (Caja x 20 un.)', price: 9000, category: 'Impulsivos', emoji: '🧒' }
 ];
+  
