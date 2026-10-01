@@ -15,7 +15,7 @@ const PRODUCTS = [
   { id: 25, name: 'Balde 5 Litros (Por unidad)', price: 11000, category: 'Hogar', emoji: '🪣' },
   { id: 27, name: 'Tortas Heladas (Por unidad)', price: 14000, category: 'Postres', emoji: '🎂' },
   { id: 19, name: 'Copón "May Cream" (Caja x 12 un.)', price: 17500, category: 'Postres', emoji: '🍨' },
-  { id: 15, name: 'Cassatas (Caja x 12 un.)', price: 14500, category: 'Postres', emoji: '🍰' },
+  { id: 15, name: 'Cassatas "May Cream" (Caja x 12 un.)', price: 14500, category: 'Postres', emoji: '🍰' },
   { id: 13, name: 'Alfabom "May Cream" (Caja x 18 un.)', price: 11700, category: 'Bombones', emoji: '🍪' },
   { id: 14, name: 'Rulo Relleno "May Cream" (Caja x 24 un.)', price: 12000, category: 'Impulsivos', emoji: '🌀' },
   { id: 12, name: 'Carita "May Cream" (Caja x 20 un.)', price: 9000, category: 'Impulsivos', emoji: '🧒' }
