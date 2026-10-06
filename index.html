@@ -2,19 +2,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Heladería JyS - Catálogo Mayorista y Minorista</title>
-  <link rel="stylesheet" href="style.css?v=4">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Heladería JyS - Catálogo Mayorista y Minorista</title>  <link rel="stylesheet" href="style.css?v=5">  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head><body>  <!-- PANTALLA DE BIENVENIDA -->  <div id="intro-screen" class="intro-screen">
     <img src="logo.png" alt="Heladería JyS" class="intro-logo">
-  </div>  <!-- CONTENIDO DEL CATÁLOGO -->  <div id="catalog-content" class="catalog-content"><!-- HEADER / ENCABEZADO -->
+  </div>  <!-- CATÁLOGO -->  <div id="catalog-content" class="catalog-content"><!-- HEADER -->
 <header class="header">
+
   <div class="header-container">
 
     <div class="logo-area">
-      <img src="logo.png" alt="Heladería JyS Logo" class="brand-logo">
-      <h1 class="brand-title">Heladería JyS</h1>
-      <span class="brand-subtitle">Mayorista y Minorista</span>
+
+      <img
+        src="logo.png"
+        alt="Heladería JyS Logo"
+        class="brand-logo"
+      >
+
+      <h1 class="brand-title">
+        Heladería JyS
+      </h1>
+
+      <span class="brand-subtitle">
+        Mayorista y Minorista
+      </span>
+
     </div>
 
     <button class="cart-btn-header" id="openCart">
@@ -22,11 +33,14 @@
     </button>
 
   </div>
+
 </header>
 
-<!-- BUSCADOR Y FILTROS -->
+
+<!-- CONTENIDO PRINCIPAL -->
 <main class="main-container">
 
+  <!-- BUSCADOR Y FILTROS -->
   <section class="search-filter-section">
 
     <input
@@ -36,45 +50,83 @@
       class="search-input"
     >
 
-    <div class="filters-container" id="filters">
-      <!-- Los botones de categorías se generan automáticamente -->
+    <div
+      class="filters-container"
+      id="filters"
+    >
+      <!-- Categorías generadas automáticamente -->
     </div>
 
   </section>
 
-  <!-- GRILLA DE PRODUCTOS -->
-  <section class="products-grid" id="products">
-    <!-- Las tarjetas de productos se renderizan dinámicamente -->
+
+  <!-- PRODUCTOS -->
+  <section
+    class="products-grid"
+    id="products"
+  >
+    <!-- Productos generados automáticamente -->
   </section>
 
 </main>
 
-<!-- CARRITO SIDEBAR -->
-<div class="cart-sidebar" id="cartModal">
+
+<!-- CARRITO -->
+<div
+  class="cart-sidebar"
+  id="cartModal"
+>
 
   <div class="cart-header">
-    <h2>Tu Pedido</h2>
-    <button class="close-btn" id="closeCart">&times;</button>
+
+    <h2>
+      Tu Pedido
+    </h2>
+
+    <button
+      class="close-btn"
+      id="closeCart"
+    >
+      &times;
+    </button>
+
   </div>
+
 
   <div class="cart-content">
 
-    <div id="cartItems" class="cart-items-list">
-      <!-- Ítems agregados -->
+    <div
+      id="cartItems"
+      class="cart-items-list"
+    >
+      <!-- Productos del carrito -->
     </div>
+
 
     <div class="cart-summary">
 
       <div class="total-row">
-        <span>Total:</span>
-        <strong id="cartTotal">$0</strong>
+
+        <span>
+          Total:
+        </span>
+
+        <strong id="cartTotal">
+          $0
+        </strong>
+
       </div>
 
-      <div id="minAmountNotice" class="min-amount-alert">
+
+      <div
+        id="minAmountNotice"
+        class="min-amount-alert"
+      >
         Mínimo de compra: $35.000
       </div>
 
-      <!-- FORMULARIO DE ENTREGA Y PAGO -->
+
+      <!-- DATOS DEL PEDIDO -->
       <div class="checkout-form">
 
         <label for="deliveryAddress">
@@ -88,15 +140,27 @@
           required
         >
 
+
         <label for="paymentMethod">
           Forma de pago
         </label>
 
         <select id="paymentMethod">
-          <option value="Efectivo">Efectivo</option>
-          <option value="Transferencia">Transferencia</option>
-          <option value="Mercado Pago">Mercado Pago</option>
+
+          <option value="Efectivo">
+            Efectivo
+          </option>
+
+          <option value="Transferencia">
+            Transferencia
+          </option>
+
+          <option value="Mercado Pago">
+            Mercado Pago
+          </option>
+
         </select>
+
 
         <label for="orderNotes">
           Aclaraciones o notas (Opcional)
@@ -109,7 +173,12 @@
 
       </div>
 
-      <button id="whatsappBtn" class="whatsapp-btn" disabled>
+
+      <button
+        id="whatsappBtn"
+        class="whatsapp-btn"
+        disabled
+      >
         Enviar pedido por WhatsApp
       </button>
 
@@ -119,7 +188,8 @@
 
 </div>
 
-  </div>  <!-- ARCHIVOS JAVASCRIPT -->  <script src="products.js?v=4"></script>  <script src="app.js?v=4"></script>  <!-- ANIMACIÓN DE ENTRADA -->  <script>
+  </div>  <!-- JAVASCRIPT DEL CATÁLOGO -->  <script src="products.js?v=5"></script>  <script src="app.js?v=5"></script>  <!-- ENTRADA AUTOMÁTICA -->  <script>
+
     window.addEventListener("load", function () {
 
       setTimeout(function () {
@@ -132,8 +202,9 @@
           .getElementById("catalog-content")
           .classList.add("catalog-visible");
 
-      }, 1500);
+      }, 700);
 
     });
+
   </script></body>
 </html>
