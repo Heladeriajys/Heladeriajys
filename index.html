@@ -1,90 +1,139 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Heladería JyS - Catálogo Mayorista y Minorista</title>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
+</head><body>  <!-- PANTALLA DE BIENVENIDA -->  <div id="intro-screen" class="intro-screen">
+    <img src="logo.png" alt="Heladería JyS" class="intro-logo">
+  </div>  <!-- CONTENIDO DEL CATÁLOGO -->  <div id="catalog-content" class="catalog-content"><!-- HEADER / ENCABEZADO -->
+<header class="header">
+  <div class="header-container">
 
-  <!-- HEADER / ENCABEZADO -->
-  <header class="header">
-    <div class="header-container">
-      <div class="logo-area">
-        <img src="logo.png" alt="Heladería JyS Logo" class="brand-logo">
-        <h1 class="brand-title">Heladería JyS</h1>
-        <span class="brand-subtitle">Mayorista y Minorista</span>
-      </div>
-      <button class="cart-btn-header" id="openCart">
-        🛒 Carrito <span id="cartCount">(0)</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- BUSCADOR Y FILTROS -->
-  <main class="main-container">
-    <section class="search-filter-section">
-      <input type="text" id="searchInput" placeholder="Buscar helado o producto..." class="search-input">
-      <div class="filters-container" id="filters">
-        <!-- Los botones de categorías se generan automáticamente -->
-      </div>
-    </section>
-
-    <!-- GRILLA DE PRODUCTOS -->
-    <section class="products-grid" id="products">
-      <!-- Las tarjetas de productos se renderizan dinámicamente -->
-    </section>
-  </main>
-
-  <!-- CARRITO SIDEBAR (MODAL) -->
-  <div class="cart-sidebar" id="cartModal">
-    <div class="cart-header">
-      <h2>Tu Pedido</h2>
-      <button class="close-btn" id="closeCart">&times;</button>
+    <div class="logo-area">
+      <img src="logo.png" alt="Heladería JyS Logo" class="brand-logo">
+      <h1 class="brand-title">Heladería JyS</h1>
+      <span class="brand-subtitle">Mayorista y Minorista</span>
     </div>
 
-    <div class="cart-content">
-      <div id="cartItems" class="cart-items-list">
-        <!-- Ítems agregados -->
-      </div>
+    <button class="cart-btn-header" id="openCart">
+      🛒 Carrito <span id="cartCount">(0)</span>
+    </button>
 
-      <div class="cart-summary">
-        <div class="total-row">
-          <span>Total:</span>
-          <strong id="cartTotal">$0</strong>
-        </div>
+  </div>
+</header>
 
-        <div id="minAmountNotice" class="min-amount-alert">
-          Mínimo de compra: $35.000
-        </div>
+<!-- BUSCADOR Y FILTROS -->
+<main class="main-container">
 
-        <!-- FORMULARIO DE ENTREGA Y PAGO -->
-        <div class="checkout-form">
-          <label for="deliveryAddress">Dirección de entrega *</label>
-          <input type="text" id="deliveryAddress" placeholder="Ej: Calle 60 #1234, Los Hornos" required>
+  <section class="search-filter-section">
 
-          <label for="paymentMethod">Forma de pago</label>
-          <select id="paymentMethod">
-            <option value="Efectivo">Efectivo</option>
-            <option value="Transferencia">Transferencia</option>
-            <option value="Mercado Pago">Mercado Pago</option>
-          </select>
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Buscar helado o producto..."
+      class="search-input"
+    >
 
-          <label for="orderNotes">Aclaraciones o notas (Opcional)</label>
-          <textarea id="orderNotes" placeholder="Ej: Timbre 2B, abonó con $50.000..."></textarea>
-        </div>
-
-        <button id="whatsappBtn" class="whatsapp-btn" disabled>
-          Enviar pedido por WhatsApp
-        </button>
-      </div>
+    <div class="filters-container" id="filters">
+      <!-- Los botones de categorías se generan automáticamente -->
     </div>
+
+  </section>
+
+  <!-- GRILLA DE PRODUCTOS -->
+  <section class="products-grid" id="products">
+    <!-- Las tarjetas de productos se renderizan dinámicamente -->
+  </section>
+
+</main>
+
+<!-- CARRITO SIDEBAR -->
+<div class="cart-sidebar" id="cartModal">
+
+  <div class="cart-header">
+    <h2>Tu Pedido</h2>
+    <button class="close-btn" id="closeCart">&times;</button>
   </div>
 
-  <!-- ARCHIVOS JAVASCRIPT (Con control de versión ?v=3) -->
-  <script src="products.js?v=3"></script>
-  <script src="app.js?v=3"></script>
-</body>
+  <div class="cart-content">
+
+    <div id="cartItems" class="cart-items-list">
+      <!-- Ítems agregados -->
+    </div>
+
+    <div class="cart-summary">
+
+      <div class="total-row">
+        <span>Total:</span>
+        <strong id="cartTotal">$0</strong>
+      </div>
+
+      <div id="minAmountNotice" class="min-amount-alert">
+        Mínimo de compra: $35.000
+      </div>
+
+      <!-- FORMULARIO DE ENTREGA Y PAGO -->
+      <div class="checkout-form">
+
+        <label for="deliveryAddress">
+          Dirección de entrega *
+        </label>
+
+        <input
+          type="text"
+          id="deliveryAddress"
+          placeholder="Ej: Calle 60 #1234, Los Hornos"
+          required
+        >
+
+        <label for="paymentMethod">
+          Forma de pago
+        </label>
+
+        <select id="paymentMethod">
+          <option value="Efectivo">Efectivo</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Mercado Pago">Mercado Pago</option>
+        </select>
+
+        <label for="orderNotes">
+          Aclaraciones o notas (Opcional)
+        </label>
+
+        <textarea
+          id="orderNotes"
+          placeholder="Ej: Timbre 2B, abonó con $50.000..."
+        ></textarea>
+
+      </div>
+
+      <button id="whatsappBtn" class="whatsapp-btn" disabled>
+        Enviar pedido por WhatsApp
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+  </div>  <!-- ARCHIVOS JAVASCRIPT -->  <script src="products.js?v=4"></script>  <script src="app.js?v=4"></script>  <!-- ANIMACIÓN DE ENTRADA -->  <script>
+    window.addEventListener("load", function () {
+
+      setTimeout(function () {
+
+        document
+          .getElementById("intro-screen")
+          .classList.add("intro-hidden");
+
+        document
+          .getElementById("catalog-content")
+          .classList.add("catalog-visible");
+
+      }, 1500);
+
+    });
+  </script></body>
 </html>
