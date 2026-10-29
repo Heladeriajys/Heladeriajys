@@ -54,7 +54,8 @@ const IMAGE_BY_ID = {
   30: "foto-tricolor.jpg",
   31: "foto-tacitas-90cc.jpg",
   32: "foto-latidos.jpg",
-  33: "foto-chupa-chups.jpg"
+  33: "foto-chupa-chups.jpg",
+  34: "foto-alfa-granizado.jpg"
 };
 
 const money = n =>
@@ -348,7 +349,6 @@ function renderCart() {
   if (!cartItemsEl) return;
 
   const entries = Object.entries(cart);
-  let count = 0;
 
   if (!entries.length) {
     cartItemsEl.innerHTML =
@@ -360,7 +360,6 @@ function renderCart() {
 
       if (!product) return "";
 
-      count += qty;
       const subtotal = product.price * qty;
 
       return `
@@ -380,8 +379,7 @@ function renderCart() {
     }).join("");
   }
 
-  count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
-
+  const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
   const total = getCartTotal();
 
   if (cartTotalEl) {
