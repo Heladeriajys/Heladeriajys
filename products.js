@@ -35,5 +35,9 @@ const PRODUCTS = [
 { id: 30, name: 'Tricolor "Postre helado" (Caja x 20 un.)', price: 36500, category: 'Postres', emoji: '🍰' },
 
 // TACITAS 90CC
-{ id: 31, name: 'Tacitas 90cc (Caja x 24 un.)', price: 15500, category: 'Postres', emoji: '🍨' }
+{ id: 31, name: 'Tacitas 90cc (Caja x 24 un.)', price: 15500, category: 'Postres', emoji: '🍨' },
+
+// NUEVOS PRODUCTOS
+{ id: 32, name: 'Latidos "Val Cream" (Caja x 18 un.)', price: 13000, category: 'Bombones', emoji: '🍫' },
+{ id: 33, name: 'Chupa Chups (Caja x 25 un.)', price: 10500, category: 'Impulsivos', emoji: '🍭' }
 ];
