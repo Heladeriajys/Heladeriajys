@@ -17,7 +17,7 @@ const PRODUCTS = [
 
   { id: 18, name: 'Rulito "May Cream" (Caja x 24 un.)', price: 5750, category: 'Impulsivos', emoji: '🍦' },
 
-  { id: 9, name: 'Pote 360cc "May Cream" (Pack x 12 un.)', price: 12300, category: 'Postres', emoji: '🍨' },
+  { id: 9, name: 'Pote 360cc "May Cream" (Pack x 12 un.)', price: 13000, category: 'Postres', emoji: '🍨' },
   { id: 10, name: 'Pote 1400cc (Por unidad)', price: 3500, category: 'Hogar', emoji: '🍨' },
   { id: 11, name: 'Balde 3 Litros (Por unidad)', price: 8000, category: 'Hogar', emoji: '🪣' },
   { id: 25, name: 'Balde 5 Litros (Por unidad)', price: 11000, category: 'Hogar', emoji: '🪣' },
