@@ -21,98 +21,58 @@
   <!-- CATÁLOGO -->
   <div id="catalog-content" class="catalog-content">
 
-    <!-- ENCABEZADO -->
     <header class="header">
       <div class="header-container">
-
         <div class="logo-area">
-          <img
-            src="logo.png"
-            alt="Heladería JyS Logo"
-            class="brand-logo"
-          >
-
+          <img src="logo.png" alt="Heladería JyS Logo" class="brand-logo">
           <h1 class="brand-title">Heladería JyS</h1>
-
-          <span class="brand-subtitle">
-            Mayorista y Minorista
-          </span>
+          <span class="brand-subtitle">Mayorista y Minorista</span>
         </div>
 
         <button class="cart-btn-header" id="openCart">
           🛒 Carrito <span id="cartCount">(0)</span>
         </button>
-
       </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="main-container">
-
-      <!-- BUSCADOR Y FILTROS -->
       <section class="search-filter-section">
-
         <input
           type="text"
           id="searchInput"
           placeholder="Buscar helado o producto..."
           class="search-input"
         >
-
-        <div
-          class="filters-container"
-          id="filters"
-        ></div>
-
+        <div class="filters-container" id="filters"></div>
       </section>
 
-      <!-- PRODUCTOS -->
-      <section
-        class="products-grid"
-        id="products"
-      ></section>
-
+      <section class="products-grid" id="products"></section>
     </main>
 
     <!-- CARRITO -->
     <div class="cart-sidebar" id="cartModal">
-
       <div class="cart-header">
         <h2>Tu Pedido</h2>
-
-        <button class="close-btn" id="closeCart">
-          &times;
-        </button>
+        <button class="close-btn" id="closeCart">&times;</button>
       </div>
 
       <div class="cart-content">
-
-        <div
-          id="cartItems"
-          class="cart-items-list"
-        ></div>
+        <div id="cartItems" class="cart-items-list"></div>
 
         <div class="cart-summary">
-
           <div class="total-row">
             <span>Total:</span>
             <strong id="cartTotal">$0</strong>
           </div>
 
-          <!-- AVISO DE COMPRA MÍNIMA OCULTO -->
           <div
             id="minAmountNotice"
             class="min-amount-alert"
             style="display:none;"
           ></div>
 
-          <!-- DATOS DEL PEDIDO -->
           <div class="checkout-form">
-
-            <label for="deliveryAddress">
-              Dirección de entrega *
-            </label>
-
+            <label for="deliveryAddress">Dirección de entrega *</label>
             <input
               type="text"
               id="deliveryAddress"
@@ -120,56 +80,39 @@
               required
             >
 
-            <label for="paymentMethod">
-              Forma de pago
-            </label>
-
+            <label for="paymentMethod">Forma de pago</label>
             <select id="paymentMethod">
               <option value="Efectivo">Efectivo</option>
               <option value="Transferencia">Transferencia</option>
               <option value="Mercado Pago">Mercado Pago</option>
             </select>
 
-            <label for="orderNotes">
-              Aclaraciones o notas (Opcional)
-            </label>
-
+            <label for="orderNotes">Aclaraciones o notas (Opcional)</label>
             <textarea
               id="orderNotes"
               placeholder="Ej: Timbre 2B..."
             ></textarea>
-
           </div>
 
-          <button
-            id="whatsappBtn"
-            class="whatsapp-btn"
-          >
+          <button id="whatsappBtn" class="whatsapp-btn">
             Enviar pedido por WhatsApp
           </button>
-
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- ARCHIVOS DEL CATÁLOGO: VERSIÓN ACTUALIZADA -->
-  <script src="products.js?v=6"></script>
-  <script src="app.js?v=6"></script>
+  <!-- CARGAR PRIMERO LOS PRODUCTOS Y DESPUÉS LA APLICACIÓN -->
+  <script src="products.js?v=7"></script>
+  <script src="app.js?v=7"></script>
 
   <!-- ENTRADA AUTOMÁTICA -->
   <script>
     window.addEventListener("load", function () {
       setTimeout(function () {
-        document
-          .getElementById("intro-screen")
-          .classList.add("intro-hidden");
-
-        document
-          .getElementById("catalog-content")
-          .classList.add("catalog-visible");
-
+        document.getElementById("intro-screen").classList.add("intro-hidden");
+        document.getElementById("catalog-content").classList.add("catalog-visible");
       }, 700);
     });
   </script>
