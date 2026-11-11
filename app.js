@@ -242,7 +242,7 @@ function renderProducts() {
         ${renderFlavorSelector(product)}
 
         <button type="button" class="add-to-cart-btn"
-          onclick="addToCart(${product.id})">
+          onclick="window.addToCart(${product.id})">
           Agregar al carrito
         </button>
       </div>
@@ -303,7 +303,6 @@ function changeCartQuantity(id, flavor, amount) {
   renderCart();
 }
 
-// ELIMINAR UN PRODUCTO COMPLETO DEL CARRITO
 function removeCartItem(id, flavor = "") {
   const key = cartKey(id, flavor || "");
 
@@ -314,6 +313,11 @@ function removeCartItem(id, flavor = "") {
   saveCart();
   renderCart();
 }
+
+// IMPORTANTE: HACER ACCESIBLES LAS FUNCIONES DE LOS BOTONES
+window.addToCart = addToCart;
+window.changeCartQuantity = changeCartQuantity;
+window.removeCartItem = removeCartItem;
 
 function createPaymentPanel() {
   if (
@@ -479,19 +483,19 @@ function renderCart() {
             <button type="button"
               aria-label="Quitar una unidad"
               title="Quitar una unidad"
-              onclick="changeCartQuantity(${id}, ${JSON.stringify(flavor)}, -1)">−</button>
+              onclick="window.changeCartQuantity(${id}, ${JSON.stringify(flavor)}, -1)">−</button>
 
             <span>${qty}</span>
 
             <button type="button"
               aria-label="Agregar una unidad"
               title="Agregar una unidad"
-              onclick="changeCartQuantity(${id}, ${JSON.stringify(flavor)}, 1)">+</button>
+              onclick="window.changeCartQuantity(${id}, ${JSON.stringify(flavor)}, 1)">+</button>
 
             <button type="button"
               aria-label="Eliminar producto completo"
               title="Eliminar producto completo"
-              onclick="removeCartItem(${id}, ${JSON.stringify(flavor)})"
+              onclick="window.removeCartItem(${id}, ${JSON.stringify(flavor)})"
               style="border:0;background:#ffe3eb;color:#c43d68;border-radius:8px;padding:7px 9px;cursor:pointer;font-size:16px;">
               🗑️
             </button>
