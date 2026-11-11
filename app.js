@@ -303,6 +303,18 @@ function changeCartQuantity(id, flavor, amount) {
   renderCart();
 }
 
+// ELIMINAR UN PRODUCTO COMPLETO DEL CARRITO
+function removeCartItem(id, flavor = "") {
+  const key = cartKey(id, flavor || "");
+
+  if (!cart[key]) return;
+
+  delete cart[key];
+
+  saveCart();
+  renderCart();
+}
+
 function createPaymentPanel() {
   if (
     !paymentMethodEl ||
@@ -461,14 +473,28 @@ function renderCart() {
             <div>${money(product.price)} x ${qty} = ${money(subtotal)}</div>
           </div>
 
-          <div class="cart-controls">
+          <div class="cart-controls"
+            style="display:flex;align-items:center;gap:7px;">
+
             <button type="button"
-              onclick="changeCartQuantity(${id}, ${JSON.stringify(flavor)}, -1)">-</button>
+              aria-label="Quitar una unidad"
+              title="Quitar una unidad"
+              onclick="changeCartQuantity(${id}, ${JSON.stringify(flavor)}, -1)">−</button>
 
             <span>${qty}</span>
 
             <button type="button"
+              aria-label="Agregar una unidad"
+              title="Agregar una unidad"
               onclick="changeCartQuantity(${id}, ${JSON.stringify(flavor)}, 1)">+</button>
+
+            <button type="button"
+              aria-label="Eliminar producto completo"
+              title="Eliminar producto completo"
+              onclick="removeCartItem(${id}, ${JSON.stringify(flavor)})"
+              style="border:0;background:#ffe3eb;color:#c43d68;border-radius:8px;padding:7px 9px;cursor:pointer;font-size:16px;">
+              🗑️
+            </button>
           </div>
         </div>
       `;
@@ -506,17 +532,14 @@ function renderCart() {
   renderPaymentPanel();
 }
 
-// NUEVA FUNCIÓN: VACIAR CARRITO AUTOMÁTICAMENTE
+// VACIAR CARRITO AUTOMÁTICAMENTE
 function clearCartAfterOrder() {
   cart = {};
 
-  // Borrar el pedido guardado del navegador
   localStorage.removeItem("jys-cart");
 
-  // Actualizar el carrito visualmente
   renderCart();
 
-  // Limpiar dirección y notas para el próximo pedido
   if (deliveryAddressEl) {
     deliveryAddressEl.value = "";
   }
@@ -525,10 +548,7 @@ function clearCartAfterOrder() {
     orderNotesEl.value = "";
   }
 
-  // Actualizar panel de pago
   renderPaymentPanel();
-
-  // Cerrar carrito
   closeCartModal();
 }
 
@@ -612,10 +632,8 @@ if (whatsappBtn) {
     const url =
       `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
 
-    // Abrir WhatsApp primero
     const whatsappWindow = window.open(url, "_blank");
 
-    // Si WhatsApp se abrió, vaciar el carrito
     if (whatsappWindow) {
       clearCartAfterOrder();
     } else {
