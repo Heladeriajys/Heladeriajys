@@ -176,6 +176,7 @@ function productImage(product) {
   `;
 }
 
+// SELECCIÓN DE VARIOS SABORES
 function renderFlavorSelector(product) {
   if (!product.flavors || !product.flavors.length) {
     return "";
@@ -183,25 +184,34 @@ function renderFlavorSelector(product) {
 
   return `
     <div class="flavor-selector" style="margin:12px 0;">
-      <label for="flavor-${product.id}"
-        style="display:block;font-weight:600;margin-bottom:6px;font-size:14px;">
-        Elegí un sabor:
+
+      <label style="display:block;font-weight:600;margin-bottom:8px;font-size:14px;">
+        Elegí uno o varios sabores:
       </label>
 
-      <select
-        id="flavor-${product.id}"
-        class="flavor-select"
-        style="width:100%;padding:10px;border:1px solid #cbdde2;border-radius:9px;background:white;font-size:14px;">
-        <option value="">Seleccionar sabor</option>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
 
         ${product.flavors.map(flavor => `
-          <option value="${flavor}">${flavor}</option>
-        `).join("")}
-      </select>
+          <label style="display:flex;align-items:center;gap:6px;padding:8px;border:1px solid #f3b5c8;border-radius:8px;background:#fff8fa;font-size:13px;">
 
-      <small style="display:block;color:#777;margin-top:5px;font-size:12px;">
-        La caja completa viene de un solo sabor.
+            <input
+              type="checkbox"
+              class="product-flavor-checkbox"
+              data-product-id="${product.id}"
+              value="${flavor}"
+              style="accent-color:#f76f96;width:16px;height:16px;">
+
+            ${flavor}
+
+          </label>
+        `).join("")}
+
+      </div>
+
+      <small style="display:block;color:#777;margin-top:7px;font-size:12px;">
+        Cada sabor seleccionado agrega una caja completa.
       </small>
+
     </div>
   `;
 }
@@ -230,13 +240,17 @@ function renderProducts() {
 
   productsEl.innerHTML = list.map(product => `
     <div class="product-card">
+
       <div class="product-image-container">
         ${productImage(product)}
       </div>
 
       <div class="product-info">
+
         <span class="product-category">${product.category}</span>
+
         <h3 class="product-name">${product.name}</h3>
+
         <p class="product-price">${money(product.price)}</p>
 
         ${renderFlavorSelector(product)}
@@ -245,6 +259,7 @@ function renderProducts() {
           onclick="window.addToCart(${product.id})">
           Agregar al carrito
         </button>
+
       </div>
     </div>
   `).join("");
@@ -261,27 +276,44 @@ function saveCart() {
   localStorage.setItem("jys-cart", JSON.stringify(cart));
 }
 
+// AGREGAR PRODUCTOS Y VARIOS SABORES
 function addToCart(id) {
   const product = PRODUCTS.find(p => p.id === Number(id));
+
   if (!product) return;
 
-  let flavor = "";
-
   if (product.flavors && product.flavors.length) {
-    const selector = document.getElementById(`flavor-${id}`);
 
-    flavor = selector ? selector.value : "";
+    const selectedFlavors = [
+      ...document.querySelectorAll(
+        `.product-flavor-checkbox[data-product-id="${id}"]:checked`
+      )
+    ].map(input => input.value);
 
-    if (!flavor) {
-      alert("Por favor, elegí un sabor antes de agregar el producto.");
-      if (selector) selector.focus();
+    if (!selectedFlavors.length) {
+      alert("Por favor, elegí al menos un sabor.");
       return;
     }
+
+    selectedFlavors.forEach(flavor => {
+      const key = cartKey(id, flavor);
+
+      cart[key] = (cart[key] || 0) + 1;
+    });
+
+    // Desmarcar los sabores después de agregarlos
+    document.querySelectorAll(
+      `.product-flavor-checkbox[data-product-id="${id}"]`
+    ).forEach(input => {
+      input.checked = false;
+    });
+
+  } else {
+
+    const key = cartKey(id, "");
+
+    cart[key] = (cart[key] || 0) + 1;
   }
-
-  const key = cartKey(id, flavor);
-
-  cart[key] = (cart[key] || 0) + 1;
 
   saveCart();
   renderCart();
@@ -290,9 +322,11 @@ function addToCart(id) {
 
 window.addToCart = addToCart;
 
-// LOS BOTONES DEL CARRITO SE MANEJAN DESDE ESTE ÚNICO EVENTO
+// BOTONES DEL CARRITO: +, - Y PAPELERA
 if (cartItemsEl) {
+
   cartItemsEl.addEventListener("click", event => {
+
     const button = event.target.closest("[data-cart-action]");
 
     if (!button || !cartItemsEl.contains(button)) return;
@@ -320,7 +354,9 @@ if (cartItemsEl) {
 
     saveCart();
     renderCart();
+
   });
+
 }
 
 function createPaymentPanel() {
@@ -330,44 +366,61 @@ function createPaymentPanel() {
   ) return;
 
   const panel = document.createElement("div");
+
   panel.id = "paymentDetailsPanel";
+
   panel.style.cssText =
     "display:none;margin:12px 0;padding:16px;border:1px solid #dce8ec;border-radius:12px;background:#f3fbfc;color:#333;line-height:1.6;";
 
   paymentMethodEl.insertAdjacentElement("afterend", panel);
 
   panel.addEventListener("click", async event => {
+
     const button = event.target.closest("[data-copy]");
+
     if (!button) return;
 
     const value = button.dataset.copy;
 
     try {
+
       if (navigator.clipboard && window.isSecureContext) {
+
         await navigator.clipboard.writeText(value);
+
       } else {
+
         const temporaryInput = document.createElement("textarea");
+
         temporaryInput.value = value;
         temporaryInput.style.position = "fixed";
         temporaryInput.style.opacity = "0";
+
         document.body.appendChild(temporaryInput);
+
         temporaryInput.select();
 
         const copied = document.execCommand("copy");
+
         temporaryInput.remove();
 
         if (!copied) throw new Error("No se pudo copiar");
       }
 
       const originalText = button.textContent;
+
       button.textContent = "¡Copiado!";
 
       setTimeout(() => {
         button.textContent = originalText;
       }, 1500);
+
     } catch {
+
       window.prompt("Copiá este dato:", value);
+
     }
+
   });
 }
 
@@ -377,12 +430,14 @@ function renderPaymentPanel() {
   createPaymentPanel();
 
   const panel = document.getElementById("paymentDetailsPanel");
+
   if (!panel) return;
 
   const method = paymentMethodEl.value;
   const total = getCartTotal();
 
   if (method === "Transferencia") {
+
     panel.style.display = "block";
 
     panel.innerHTML = `
@@ -397,6 +452,7 @@ function renderPaymentPanel() {
       <p style="margin-bottom:10px">
         <strong>Alias:</strong><br>
         <span style="overflow-wrap:anywhere">${PAYMENT_ALIAS}</span><br>
+
         <button type="button" data-copy="${PAYMENT_ALIAS}"
           style="margin-top:6px;padding:8px 12px;border:0;border-radius:7px;background:#d8f3f5;cursor:pointer;font-weight:600">
           Copiar alias
@@ -406,6 +462,7 @@ function renderPaymentPanel() {
       <p style="margin-bottom:10px">
         <strong>CBU:</strong><br>
         <span style="overflow-wrap:anywhere">${PAYMENT_CBU}</span><br>
+
         <button type="button" data-copy="${PAYMENT_CBU}"
           style="margin-top:6px;padding:8px 12px;border:0;border-radius:7px;background:#d8f3f5;cursor:pointer;font-weight:600">
           Copiar CBU
@@ -413,10 +470,13 @@ function renderPaymentPanel() {
       </p>
 
       <div style="padding:12px;background:#fff;border-radius:8px;margin-top:8px">
+
         <strong>Total del pedido:</strong>
+
         <div style="font-size:23px;font-weight:700;color:#087e8b">
           ${money(total)}
         </div>
+
       </div>
 
       <p style="font-size:13px;margin-top:10px">
@@ -424,25 +484,33 @@ function renderPaymentPanel() {
         El pago queda pendiente hasta que se confirme la transferencia.
       </p>
     `;
+
   } else if (method === "Mercado Pago") {
+
     panel.style.display = "block";
 
     panel.innerHTML = `
       <h3 style="margin:0 0 8px;font-size:18px">
         Pago con billetera virtual
       </h3>
+
       <p>El total de tu pedido es <strong>${money(total)}</strong>.</p>
+
       <p style="margin-top:8px">
         Enviá tu pedido por WhatsApp para solicitar un enlace de pago.
         El enlace debe generarse por el importe correcto.
       </p>
+
       <p style="font-size:13px;margin-top:8px">
         Todavía no se realizó ningún pago.
       </p>
     `;
+
   } else {
+
     panel.style.display = "none";
     panel.innerHTML = "";
+
   }
 }
 
@@ -450,27 +518,36 @@ if (paymentMethodEl) {
   paymentMethodEl.addEventListener("change", renderPaymentPanel);
 }
 
+// MOSTRAR CARRITO
 function renderCart() {
   if (!cartItemsEl) return;
 
   const entries = Object.entries(cart);
 
   if (!entries.length) {
+
     cartItemsEl.innerHTML =
       "<p class='empty-cart'>Tu carrito está vacío</p>";
+
   } else {
+
     cartItemsEl.innerHTML = entries.map(([key, qty]) => {
+
       const { id, flavor } = parseCartKey(key);
+
       const product = PRODUCTS.find(p => p.id === id);
 
       if (!product) return "";
 
       const subtotal = product.price * qty;
+
       const encodedKey = encodeURIComponent(key);
 
       return `
         <div class="cart-item">
+
           <div>
+
             <strong>${product.name}</strong>
 
             ${flavor ? `
@@ -479,7 +556,10 @@ function renderCart() {
               </div>
             ` : ""}
 
-            <div>${money(product.price)} x ${qty} = ${money(subtotal)}</div>
+            <div>
+              ${money(product.price)} x ${qty} = ${money(subtotal)}
+            </div>
+
           </div>
 
           <div class="cart-controls"
@@ -489,7 +569,9 @@ function renderCart() {
               data-cart-action="decrease"
               data-cart-key="${encodedKey}"
               aria-label="Quitar una unidad"
-              title="Quitar una unidad">−</button>
+              title="Quitar una unidad">
+              −
+            </button>
 
             <span>${qty}</span>
 
@@ -497,7 +579,9 @@ function renderCart() {
               data-cart-action="increase"
               data-cart-key="${encodedKey}"
               aria-label="Agregar una unidad"
-              title="Agregar una unidad">+</button>
+              title="Agregar una unidad">
+              +
+            </button>
 
             <button type="button"
               data-cart-action="remove"
@@ -507,10 +591,14 @@ function renderCart() {
               style="border:0;background:#ffe3eb;color:#c43d68;border-radius:8px;padding:7px 9px;cursor:pointer;font-size:16px;">
               🗑️
             </button>
+
           </div>
+
         </div>
       `;
+
     }).join("");
+
   }
 
   const count = Object.values(cart).reduce(
@@ -570,11 +658,15 @@ if (closeCartBtn) {
 
 // PEDIDO POR WHATSAPP
 if (whatsappBtn) {
+
   whatsappBtn.onclick = () => {
+
     const entries = Object.entries(cart).filter(([key, qty]) => {
+
       const { id } = parseCartKey(key);
 
       return PRODUCTS.some(p => p.id === id) && qty > 0;
+
     });
 
     if (!entries.length) {
@@ -605,10 +697,13 @@ if (whatsappBtn) {
       "¡Hola! Quisiera realizar el siguiente pedido:\n\n";
 
     entries.forEach(([key, qty]) => {
+
       const { id, flavor } = parseCartKey(key);
+
       const product = PRODUCTS.find(p => p.id === id);
 
       if (product) {
+
         message += `• ${product.name}`;
 
         if (flavor) {
@@ -616,7 +711,9 @@ if (whatsappBtn) {
         }
 
         message += ` x${qty} - ${money(product.price * qty)}\n`;
+
       }
+
     });
 
     message += `\n*Total:* ${money(total)}`;
@@ -624,17 +721,21 @@ if (whatsappBtn) {
     message += `\n*Dirección:* ${address}`;
 
     if (payment === "Transferencia") {
+
       message += "\n\n*Datos para transferir*";
       message += `\nTitular: ${PAYMENT_HOLDER}`;
       message += `\nAlias: ${PAYMENT_ALIAS}`;
       message += `\nCBU: ${PAYMENT_CBU}`;
       message += `\nImporte: ${money(total)}`;
       message += "\nEl pago queda pendiente de verificación.";
+
     }
 
     if (payment === "Mercado Pago") {
+
       message +=
         "\n\nQuisiera recibir un enlace de pago por billetera virtual.";
+
     }
 
     if (notes) {
@@ -647,39 +748,53 @@ if (whatsappBtn) {
     const whatsappWindow = window.open(url, "_blank");
 
     if (whatsappWindow) {
+
       clearCartAfterOrder();
+
     } else {
+
       alert(
         "No se pudo abrir WhatsApp. Permití las ventanas emergentes e intentá nuevamente. Tu carrito sigue guardado."
       );
+
     }
+
   };
+
 }
 
 // INICIALIZACIÓN
 createPaymentPanel();
 
 if (typeof PRODUCTS === "undefined" || !Array.isArray(PRODUCTS)) {
+
   if (productsEl) {
+
     productsEl.innerHTML = `
       <p style="grid-column:1/-1;text-align:center;padding:20px;color:#b00020">
         No se pudieron cargar los productos. Recargá la página o intentá más tarde.
       </p>
     `;
+
   }
+
 } else {
+
   normalizeCart();
 
   Object.keys(cart).forEach(key => {
+
     const { id } = parseCartKey(key);
 
     if (!PRODUCTS.some(p => p.id === id)) {
       delete cart[key];
     }
+
   });
 
   saveCart();
   renderFilters();
   renderProducts();
   renderCart();
+
 }
