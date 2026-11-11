@@ -5,9 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <meta name="theme-color" content="#ff8fab">
+  <meta name="description" content="Heladería JyS - Catálogo mayorista y minorista">
+
   <title>Heladería JyS - Catálogo Mayorista y Minorista</title>
 
-  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="style.css?v=8">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
@@ -46,6 +49,7 @@
 
     <header class="header">
       <div class="header-container">
+
         <div class="logo-area">
           <img src="logo.png" alt="Heladería JyS Logo" class="brand-logo">
           <h1 class="brand-title">Heladería JyS</h1>
@@ -55,34 +59,43 @@
         <button class="cart-btn-header" id="openCart">
           🛒 Carrito <span id="cartCount">(0)</span>
         </button>
+
       </div>
     </header>
 
     <main class="main-container">
+
       <section class="search-filter-section">
+
         <input
           type="text"
           id="searchInput"
           placeholder="Buscar helado o producto..."
           class="search-input"
         >
+
         <div class="filters-container" id="filters"></div>
+
       </section>
 
       <section class="products-grid" id="products"></section>
+
     </main>
 
     <!-- CARRITO -->
     <div class="cart-sidebar" id="cartModal">
+
       <div class="cart-header">
         <h2>Tu Pedido</h2>
         <button class="close-btn" id="closeCart">&times;</button>
       </div>
 
       <div class="cart-content">
+
         <div id="cartItems" class="cart-items-list"></div>
 
         <div class="cart-summary">
+
           <div class="total-row">
             <span>Total:</span>
             <strong id="cartTotal">$0</strong>
@@ -95,7 +108,9 @@
           ></div>
 
           <div class="checkout-form">
+
             <label for="deliveryAddress">Dirección de entrega *</label>
+
             <input
               type="text"
               id="deliveryAddress"
@@ -104,6 +119,7 @@
             >
 
             <label for="paymentMethod">Forma de pago</label>
+
             <select id="paymentMethod">
               <option value="Efectivo">Efectivo</option>
               <option value="Transferencia">Transferencia</option>
@@ -111,24 +127,29 @@
             </select>
 
             <label for="orderNotes">Aclaraciones o notas (Opcional)</label>
+
             <textarea
               id="orderNotes"
               placeholder="Ej: Timbre 2B..."
             ></textarea>
+
           </div>
 
           <button id="whatsappBtn" class="whatsapp-btn">
             Enviar pedido por WhatsApp
           </button>
+
         </div>
+
       </div>
+
     </div>
 
   </div>
 
-  <!-- CARGAR PRIMERO LOS PRODUCTOS Y DESPUÉS LA APLICACIÓN -->
-  <script src="products.js?v=7"></script>
-  <script src="app.js?v=7"></script>
+  <!-- PRODUCTOS Y APLICACIÓN -->
+  <script src="products.js?v=8"></script>
+  <script src="app.js?v=8"></script>
 
   <!-- ENTRAR AL CATÁLOGO -->
   <script>
@@ -140,6 +161,42 @@
       introScreen.classList.add("intro-hidden");
       catalogContent.classList.add("catalog-visible");
     });
+  </script>
+
+  <!-- ACTUALIZACIÓN AUTOMÁTICA DEL CATÁLOGO -->
+  <script>
+    if ("serviceWorker" in navigator) {
+
+      let alreadyReloaded = false;
+      const hadController = !!navigator.serviceWorker.controller;
+
+      navigator.serviceWorker.addEventListener(
+        "controllerchange",
+        function () {
+          if (hadController && !alreadyReloaded) {
+            alreadyReloaded = true;
+            window.location.reload();
+          }
+        }
+      );
+
+      window.addEventListener("load", async function () {
+        try {
+          const registration =
+            await navigator.serviceWorker.register("./sw.js", {
+              updateViaCache: "none"
+            });
+
+          await registration.update();
+
+          console.log("Heladería JyS: actualizaciones activadas.");
+
+        } catch (error) {
+          console.log("No se pudo actualizar el catálogo:", error);
+        }
+      });
+
+    }
   </script>
 
 </body>
