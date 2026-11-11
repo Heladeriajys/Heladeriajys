@@ -288,36 +288,40 @@ function addToCart(id) {
   openCartModal();
 }
 
-function changeCartQuantity(id, flavor, amount) {
-  const key = cartKey(id, flavor || "");
-
-  if (!cart[key]) return;
-
-  cart[key] += amount;
-
-  if (cart[key] <= 0) {
-    delete cart[key];
-  }
-
-  saveCart();
-  renderCart();
-}
-
-function removeCartItem(id, flavor = "") {
-  const key = cartKey(id, flavor || "");
-
-  if (!cart[key]) return;
-
-  delete cart[key];
-
-  saveCart();
-  renderCart();
-}
-
-// IMPORTANTE: HACER ACCESIBLES LAS FUNCIONES DE LOS BOTONES
 window.addToCart = addToCart;
-window.changeCartQuantity = changeCartQuantity;
-window.removeCartItem = removeCartItem;
+
+// LOS BOTONES DEL CARRITO SE MANEJAN DESDE ESTE ÚNICO EVENTO
+if (cartItemsEl) {
+  cartItemsEl.addEventListener("click", event => {
+    const button = event.target.closest("[data-cart-action]");
+
+    if (!button || !cartItemsEl.contains(button)) return;
+
+    const key = decodeURIComponent(button.dataset.cartKey || "");
+    const action = button.dataset.cartAction;
+
+    if (!Object.prototype.hasOwnProperty.call(cart, key)) return;
+
+    if (action === "increase") {
+      cart[key] += 1;
+    }
+
+    if (action === "decrease") {
+      cart[key] -= 1;
+
+      if (cart[key] <= 0) {
+        delete cart[key];
+      }
+    }
+
+    if (action === "remove") {
+      delete cart[key];
+    }
+
+    saveCart();
+    renderCart();
+  });
+}
 
 function createPaymentPanel() {
   if (
@@ -462,6 +466,7 @@ function renderCart() {
       if (!product) return "";
 
       const subtotal = product.price * qty;
+      const encodedKey = encodeURIComponent(key);
 
       return `
         <div class="cart-item">
@@ -481,21 +486,24 @@ function renderCart() {
             style="display:flex;align-items:center;gap:7px;">
 
             <button type="button"
+              data-cart-action="decrease"
+              data-cart-key="${encodedKey}"
               aria-label="Quitar una unidad"
-              title="Quitar una unidad"
-              onclick="window.changeCartQuantity(${id}, ${JSON.stringify(flavor)}, -1)">−</button>
+              title="Quitar una unidad">−</button>
 
             <span>${qty}</span>
 
             <button type="button"
+              data-cart-action="increase"
+              data-cart-key="${encodedKey}"
               aria-label="Agregar una unidad"
-              title="Agregar una unidad"
-              onclick="window.changeCartQuantity(${id}, ${JSON.stringify(flavor)}, 1)">+</button>
+              title="Agregar una unidad">+</button>
 
             <button type="button"
+              data-cart-action="remove"
+              data-cart-key="${encodedKey}"
               aria-label="Eliminar producto completo"
               title="Eliminar producto completo"
-              onclick="window.removeCartItem(${id}, ${JSON.stringify(flavor)})"
               style="border:0;background:#ffe3eb;color:#c43d68;border-radius:8px;padding:7px 9px;cursor:pointer;font-size:16px;">
               🗑️
             </button>
