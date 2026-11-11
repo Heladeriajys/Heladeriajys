@@ -24,7 +24,7 @@ body {
 }
 
 /* =====================================
-   BIENVENIDA
+   BIENVENIDA CON VIDEO
 ===================================== */
 
 .intro-screen {
@@ -32,96 +32,77 @@ body {
   inset: 0;
   z-index: 9999;
   background: linear-gradient(145deg, #fff5f8, #ffe1e9);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  padding: 20px;
-
+  padding: 18px;
   opacity: 1;
   visibility: visible;
-
   transition: opacity .4s ease, visibility .4s ease;
 }
 
-.intro-card {
+.intro-content {
   width: 100%;
-  max-width: 440px;
+  max-width: 400px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
-
+  gap: 14px;
   background: white;
-  padding: 18px;
+  padding: 20px;
   border-radius: 28px;
-
-  box-shadow: 0 12px 40px rgba(255, 143, 171, .18);
-
+  box-shadow: 0 12px 40px rgba(255, 143, 171, .22);
+  border: 2px solid #ffe3eb;
   animation: welcomeEntrance .6s ease;
 }
 
-.intro-mascot {
-  width: 100%;
-  max-height: 390px;
-  object-fit: contain;
-  border-radius: 18px;
-}
+/* VIDEO MÁS PEQUEÑO */
 
-.intro-message h1 {
-  font-size: 29px;
-  font-weight: 800;
-  color: var(--rosa-oscuro);
-}
-
-.intro-message p {
-  font-size: 15px;
-  font-weight: 600;
-  color: #555;
-  margin-top: 3px;
-}
-
-.intro-message span {
+.intro-video {
   display: block;
-  font-size: 13px;
-  color: #888;
-  margin-top: 8px;
+  width: 75%;
+  max-width: 270px;
+  height: 250px;
+  object-fit: contain;
+  background: #fff5f8;
+  border-radius: 20px;
 }
 
-.enter-btn {
-  width: 100%;
-  padding: 15px;
-  border: none;
+/* TEXTO DE BIENVENIDA */
+
+.intro-content h2 {
+  color: var(--rosa-oscuro);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.intro-content p {
+  color: #777;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* BOTÓN ROSITA */
+
+.enter-catalog-btn {
+  width: 85%;
+  padding: 14px;
+  border: 2px solid #ffb3c6;
   border-radius: 30px;
-
-  background: var(--rosa);
+  background: linear-gradient(135deg, #ffb3c6, #ff8fab);
   color: white;
-
   font-size: 15px;
   font-weight: 700;
-  letter-spacing: .4px;
-
   cursor: pointer;
-
-  box-shadow: 0 5px 15px rgba(255, 143, 171, .35);
+  box-shadow: 0 5px 15px rgba(255, 143, 171, .25);
   transition: .2s;
 }
 
-.enter-btn span {
-  margin-left: 8px;
-  font-size: 20px;
-}
-
-.enter-btn:active {
+.enter-catalog-btn:active {
   transform: scale(.97);
   background: var(--rosa-oscuro);
-}
-
-.intro-footer {
-  color: #aaa;
-  font-size: 12px;
 }
 
 .intro-hidden {
@@ -165,14 +146,12 @@ body {
   background: linear-gradient(135deg, #ffb3c6, #ff8fab);
   color: white;
   padding: 17px 15px;
-
   box-shadow: 0 4px 15px rgba(255, 143, 171, .18);
 }
 
 .header-container {
   max-width: 900px;
   margin: auto;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -205,16 +184,12 @@ body {
 .cart-btn-header {
   background: white;
   color: var(--rosa-oscuro);
-
   border: none;
   padding: 10px 22px;
   border-radius: 25px;
-
   font-size: 14px;
   font-weight: 700;
-
   cursor: pointer;
-
   box-shadow: 0 3px 10px rgba(0, 0, 0, .08);
   transition: .2s;
 }
@@ -231,16 +206,13 @@ body {
   max-width: 900px;
   margin: 15px auto 0;
   padding: 12px;
-
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 9px;
-
   background: white;
   border: 1px solid #ffe0e9;
   border-radius: 15px;
-
   color: var(--rosa-oscuro);
   font-size: 13px;
   font-weight: 600;
@@ -288,13 +260,10 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-
   background: white;
   border: 2px solid #ffd0dd;
   border-radius: 25px;
-
   padding: 0 14px;
-
   box-shadow: 0 3px 12px rgba(255, 143, 171, .08);
 }
 
@@ -305,11 +274,9 @@ body {
 .search-input {
   width: 100%;
   padding: 12px 0;
-
   border: none;
   outline: none;
   background: transparent;
-
   font-size: 13px;
   color: var(--texto);
 }
@@ -333,14 +300,11 @@ body {
   background: white;
   border: 1px solid #ffc2d1;
   color: var(--rosa-oscuro);
-
   padding: 8px 17px;
   border-radius: 22px;
-
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
-
   cursor: pointer;
   transition: .2s;
 }
@@ -365,14 +329,10 @@ body {
   background: white;
   border-radius: 18px;
   overflow: hidden;
-
   display: flex;
   flex-direction: column;
-
   border: 1px solid #ffe5ec;
-
   box-shadow: 0 4px 14px rgba(0, 0, 0, .045);
-
   transition: transform .2s, box-shadow .2s;
 }
 
@@ -438,10 +398,8 @@ body {
 .flavor-select {
   width: 100%;
   padding: 9px !important;
-
   border: 1px solid #ffc2d1 !important;
   border-radius: 10px !important;
-
   background: #fff8fa !important;
   color: #444;
   outline: none;
@@ -461,18 +419,13 @@ body {
 .add-to-cart-btn {
   background: var(--rosa);
   color: white;
-
   border: none;
   padding: 10px 6px;
-
   border-radius: 20px;
-
   font-weight: 700;
   font-size: 11px;
-
   cursor: pointer;
   margin-top: auto;
-
   transition: .2s;
 }
 
@@ -490,13 +443,10 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-
   margin: 30px 0 15px;
   padding: 15px;
-
   background: white;
   border-radius: 15px;
-
   color: var(--rosa-oscuro);
   font-size: 12px;
   font-weight: 600;
@@ -510,18 +460,13 @@ body {
   position: fixed;
   top: 0;
   right: -105%;
-
   width: 100%;
   max-width: 420px;
   height: 100%;
-
   background: white;
-
   box-shadow: -5px 0 25px rgba(0, 0, 0, .12);
-
   transition: right .3s ease;
   z-index: 1000;
-
   display: flex;
   flex-direction: column;
 }
@@ -534,9 +479,7 @@ body {
 .cart-header {
   background: linear-gradient(135deg, #ffb3c6, #ff8fab);
   color: white;
-
   padding: 17px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -555,11 +498,9 @@ body {
   background: rgba(255, 255, 255, .2);
   border: none;
   color: white;
-
   width: 35px;
   height: 35px;
   border-radius: 50%;
-
   font-size: 24px;
   cursor: pointer;
 }
@@ -588,10 +529,8 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-
   padding: 13px 0;
   border-bottom: 1px solid #ffe5ec;
-
   font-size: 12px;
 }
 
@@ -608,15 +547,12 @@ body {
 .cart-controls button {
   background: var(--rosa);
   border: none;
-
   width: 27px;
   height: 27px;
   border-radius: 50%;
-
   color: white;
   font-weight: bold;
   font-size: 16px;
-
   cursor: pointer;
 }
 
@@ -633,7 +569,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   font-size: 16px;
   margin-bottom: 15px;
 }
@@ -661,13 +596,10 @@ body {
 .checkout-form textarea {
   width: 100%;
   padding: 11px;
-
   border: 1px solid #ffd0dd;
   border-radius: 10px;
-
   background: #fffafd;
   outline: none;
-
   font-size: 12px;
 }
 
@@ -685,18 +617,13 @@ body {
 .whatsapp-btn {
   background: var(--verde);
   color: white;
-
   border: none;
   padding: 14px;
-
   border-radius: 25px;
-
   font-weight: 700;
   font-size: 13px;
-
   width: 100%;
   cursor: pointer;
-
   transition: .2s;
 }
 
@@ -775,6 +702,33 @@ body {
 @media (min-width: 1000px) {
   .products-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* =====================================
+   CELULARES
+===================================== */
+
+@media (max-width: 480px) {
+
+  .intro-content {
+    max-width: 350px;
+    padding: 15px;
+    gap: 11px;
+  }
+
+  .intro-video {
+    width: 75%;
+    max-width: 240px;
+    height: 220px;
+  }
+
+  .intro-content h2 {
+    font-size: 21px;
+  }
+
+  .enter-catalog-btn {
+    width: 90%;
   }
 }
 
