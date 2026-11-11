@@ -7,7 +7,7 @@
 
   <title>Heladería JyS - Catálogo Mayorista y Minorista</title>
 
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
@@ -15,7 +15,30 @@
 
   <!-- PANTALLA DE BIENVENIDA -->
   <div id="intro-screen" class="intro-screen">
-    <img src="logo.png" alt="Heladería JyS" class="intro-logo">
+
+    <div class="intro-content">
+
+      <video
+        class="intro-video"
+        id="welcomeVideo"
+        autoplay
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="bienvenida.mp4" type="video/mp4">
+        Tu navegador no puede reproducir este video.
+      </video>
+
+      <h2>¡Bienvenidos a Heladería JyS!</h2>
+      <p>Mayorista y Minorista 🍦</p>
+
+      <button id="enterCatalog" class="enter-catalog-btn">
+        Ver catálogo 🛒
+      </button>
+
+    </div>
+
   </div>
 
   <!-- CATÁLOGO -->
@@ -107,13 +130,15 @@
   <script src="products.js?v=7"></script>
   <script src="app.js?v=7"></script>
 
-  <!-- ENTRADA AUTOMÁTICA -->
+  <!-- ENTRAR AL CATÁLOGO -->
   <script>
-    window.addEventListener("load", function () {
-      setTimeout(function () {
-        document.getElementById("intro-screen").classList.add("intro-hidden");
-        document.getElementById("catalog-content").classList.add("catalog-visible");
-      }, 700);
+    const introScreen = document.getElementById("intro-screen");
+    const catalogContent = document.getElementById("catalog-content");
+    const enterButton = document.getElementById("enterCatalog");
+
+    enterButton.addEventListener("click", function () {
+      introScreen.classList.add("intro-hidden");
+      catalogContent.classList.add("catalog-visible");
     });
   </script>
 
