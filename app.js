@@ -27,7 +27,6 @@ try {
   cart = {};
 }
 
-// Imágenes de productos
 const IMAGE_BY_ID = {
   1: "foto-cono-val.jpg",
   3: "foto-bombon-val.jpg",
@@ -65,7 +64,6 @@ const money = n =>
     maximumFractionDigits: 0
   }).format(n || 0);
 
-// Identificación de cada producto y sabor
 function cartKey(id, flavor = "") {
   return `${id}::${flavor}`;
 }
@@ -79,7 +77,6 @@ function parseCartKey(key) {
   };
 }
 
-// Compatibilidad con el carrito anterior
 function normalizeCart() {
   const normalized = {};
 
@@ -179,7 +176,6 @@ function productImage(product) {
   `;
 }
 
-// Selector individual de sabores
 function renderFlavorSelector(product) {
   if (!product.flavors || !product.flavors.length) {
     return "";
@@ -261,12 +257,10 @@ if (searchInput) {
   });
 }
 
-// Guardar carrito
 function saveCart() {
   localStorage.setItem("jys-cart", JSON.stringify(cart));
 }
 
-// Agregar producto
 function addToCart(id) {
   const product = PRODUCTS.find(p => p.id === Number(id));
   if (!product) return;
@@ -294,7 +288,6 @@ function addToCart(id) {
   openCartModal();
 }
 
-// Modificar cantidad desde el carrito
 function changeCartQuantity(id, flavor, amount) {
   const key = cartKey(id, flavor || "");
 
@@ -310,7 +303,6 @@ function changeCartQuantity(id, flavor, amount) {
   renderCart();
 }
 
-// PANEL DE PAGO
 function createPaymentPanel() {
   if (
     !paymentMethodEl ||
@@ -438,7 +430,6 @@ if (paymentMethodEl) {
   paymentMethodEl.addEventListener("change", renderPaymentPanel);
 }
 
-// CARRITO
 function renderCart() {
   if (!cartItemsEl) return;
 
@@ -513,6 +504,32 @@ function renderCart() {
   });
 
   renderPaymentPanel();
+}
+
+// NUEVA FUNCIÓN: VACIAR CARRITO AUTOMÁTICAMENTE
+function clearCartAfterOrder() {
+  cart = {};
+
+  // Borrar el pedido guardado del navegador
+  localStorage.removeItem("jys-cart");
+
+  // Actualizar el carrito visualmente
+  renderCart();
+
+  // Limpiar dirección y notas para el próximo pedido
+  if (deliveryAddressEl) {
+    deliveryAddressEl.value = "";
+  }
+
+  if (orderNotesEl) {
+    orderNotesEl.value = "";
+  }
+
+  // Actualizar panel de pago
+  renderPaymentPanel();
+
+  // Cerrar carrito
+  closeCartModal();
 }
 
 if (closeCartBtn) {
@@ -595,7 +612,17 @@ if (whatsappBtn) {
     const url =
       `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
 
-    window.open(url, "_blank");
+    // Abrir WhatsApp primero
+    const whatsappWindow = window.open(url, "_blank");
+
+    // Si WhatsApp se abrió, vaciar el carrito
+    if (whatsappWindow) {
+      clearCartAfterOrder();
+    } else {
+      alert(
+        "No se pudo abrir WhatsApp. Permití las ventanas emergentes e intentá nuevamente. Tu carrito sigue guardado."
+      );
+    }
   };
 }
 
