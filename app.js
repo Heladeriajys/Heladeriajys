@@ -27,6 +27,7 @@ try {
   cart = {};
 }
 
+// Imágenes de productos
 const IMAGE_BY_ID = {
   1: "foto-cono-val.jpg",
   3: "foto-bombon-val.jpg",
@@ -53,7 +54,8 @@ const IMAGE_BY_ID = {
   31: "foto-tacitas-90cc.jpg",
   32: "foto-latidos.jpg",
   33: "foto-chupa-chups.jpg",
-  34: "foto-alfa-granizado.jpg"
+  34: "foto-alfa-granizado.jpg",
+  35: "foto-alfatur.jpg"
 };
 
 const money = n =>
@@ -63,15 +65,53 @@ const money = n =>
     maximumFractionDigits: 0
   }).format(n || 0);
 
-function categories() {
-  return ["Todos", ...new Set(PRODUCTS.map(p => p.category))];
+// Identificación de cada producto y sabor
+function cartKey(id, flavor = "") {
+  return `${id}::${flavor}`;
+}
+
+function parseCartKey(key) {
+  const parts = String(key).split("::");
+
+  return {
+    id: Number(parts[0]),
+    flavor: parts.slice(1).join("::")
+  };
+}
+
+// Compatibilidad con el carrito anterior
+function normalizeCart() {
+  const normalized = {};
+
+  Object.entries(cart).forEach(([key, qty]) => {
+    if (typeof qty !== "number" || qty <= 0) return;
+
+    if (key.includes("::")) {
+      normalized[key] = (normalized[key] || 0) + qty;
+    } else {
+      const id = Number(key);
+
+      if (PRODUCTS.some(p => p.id === id)) {
+        const newKey = cartKey(id);
+        normalized[newKey] = (normalized[newKey] || 0) + qty;
+      }
+    }
+  });
+
+  cart = normalized;
 }
 
 function getCartTotal() {
-  return Object.entries(cart).reduce((total, [idStr, qty]) => {
-    const product = PRODUCTS.find(p => p.id === Number(idStr));
+  return Object.entries(cart).reduce((total, [key, qty]) => {
+    const { id } = parseCartKey(key);
+    const product = PRODUCTS.find(p => p.id === id);
+
     return total + (product ? product.price * qty : 0);
   }, 0);
+}
+
+function categories() {
+  return ["Todos", ...new Set(PRODUCTS.map(p => p.category))];
 }
 
 function openCartModal() {
@@ -139,6 +179,37 @@ function productImage(product) {
   `;
 }
 
+// Selector individual de sabores
+function renderFlavorSelector(product) {
+  if (!product.flavors || !product.flavors.length) {
+    return "";
+  }
+
+  return `
+    <div class="flavor-selector" style="margin:12px 0;">
+      <label for="flavor-${product.id}"
+        style="display:block;font-weight:600;margin-bottom:6px;font-size:14px;">
+        Elegí un sabor:
+      </label>
+
+      <select
+        id="flavor-${product.id}"
+        class="flavor-select"
+        style="width:100%;padding:10px;border:1px solid #cbdde2;border-radius:9px;background:white;font-size:14px;">
+        <option value="">Seleccionar sabor</option>
+
+        ${product.flavors.map(flavor => `
+          <option value="${flavor}">${flavor}</option>
+        `).join("")}
+      </select>
+
+      <small style="display:block;color:#777;margin-top:5px;font-size:12px;">
+        La caja completa viene de un solo sabor.
+      </small>
+    </div>
+  `;
+}
+
 function renderProducts() {
   if (!productsEl) return;
 
@@ -172,6 +243,8 @@ function renderProducts() {
         <h3 class="product-name">${product.name}</h3>
         <p class="product-price">${money(product.price)}</p>
 
+        ${renderFlavorSelector(product)}
+
         <button type="button" class="add-to-cart-btn"
           onclick="addToCart(${product.id})">
           Agregar al carrito
@@ -188,35 +261,56 @@ if (searchInput) {
   });
 }
 
+// Guardar carrito
 function saveCart() {
   localStorage.setItem("jys-cart", JSON.stringify(cart));
 }
 
+// Agregar producto
 function addToCart(id) {
   const product = PRODUCTS.find(p => p.id === Number(id));
   if (!product) return;
 
-  cart[id] = (cart[id] || 0) + 1;
+  let flavor = "";
+
+  if (product.flavors && product.flavors.length) {
+    const selector = document.getElementById(`flavor-${id}`);
+
+    flavor = selector ? selector.value : "";
+
+    if (!flavor) {
+      alert("Por favor, elegí un sabor antes de agregar el producto.");
+      if (selector) selector.focus();
+      return;
+    }
+  }
+
+  const key = cartKey(id, flavor);
+
+  cart[key] = (cart[key] || 0) + 1;
+
   saveCart();
   renderCart();
   openCartModal();
 }
 
-function removeFromCart(id) {
-  if (cart[id]) {
-    cart[id]--;
+// Modificar cantidad desde el carrito
+function changeCartQuantity(id, flavor, amount) {
+  const key = cartKey(id, flavor || "");
 
-    if (cart[id] <= 0) {
-      delete cart[id];
-    }
+  if (!cart[key]) return;
+
+  cart[key] += amount;
+
+  if (cart[key] <= 0) {
+    delete cart[key];
   }
 
   saveCart();
   renderCart();
 }
 
-/* PANEL DE PAGO */
-
+// PANEL DE PAGO
 function createPaymentPanel() {
   if (
     !paymentMethodEl ||
@@ -344,8 +438,7 @@ if (paymentMethodEl) {
   paymentMethodEl.addEventListener("change", renderPaymentPanel);
 }
 
-/* CARRITO */
-
+// CARRITO
 function renderCart() {
   if (!cartItemsEl) return;
 
@@ -355,8 +448,8 @@ function renderCart() {
     cartItemsEl.innerHTML =
       "<p class='empty-cart'>Tu carrito está vacío</p>";
   } else {
-    cartItemsEl.innerHTML = entries.map(([idStr, qty]) => {
-      const id = Number(idStr);
+    cartItemsEl.innerHTML = entries.map(([key, qty]) => {
+      const { id, flavor } = parseCartKey(key);
       const product = PRODUCTS.find(p => p.id === id);
 
       if (!product) return "";
@@ -367,13 +460,24 @@ function renderCart() {
         <div class="cart-item">
           <div>
             <strong>${product.name}</strong>
+
+            ${flavor ? `
+              <div style="color:#087e8b;font-weight:600;margin-top:4px;">
+                Sabor: ${flavor}
+              </div>
+            ` : ""}
+
             <div>${money(product.price)} x ${qty} = ${money(subtotal)}</div>
           </div>
 
           <div class="cart-controls">
-            <button type="button" onclick="removeFromCart(${id})">-</button>
+            <button type="button"
+              onclick="changeCartQuantity(${id}, ${JSON.stringify(flavor)}, -1)">-</button>
+
             <span>${qty}</span>
-            <button type="button" onclick="addToCart(${id})">+</button>
+
+            <button type="button"
+              onclick="changeCartQuantity(${id}, ${JSON.stringify(flavor)}, 1)">+</button>
           </div>
         </div>
       `;
@@ -415,13 +519,14 @@ if (closeCartBtn) {
   closeCartBtn.onclick = closeCartModal;
 }
 
-/* PEDIDO POR WHATSAPP */
-
+// PEDIDO POR WHATSAPP
 if (whatsappBtn) {
   whatsappBtn.onclick = () => {
-    const entries = Object.entries(cart).filter(([idStr, qty]) =>
-      PRODUCTS.some(p => p.id === Number(idStr)) && qty > 0
-    );
+    const entries = Object.entries(cart).filter(([key, qty]) => {
+      const { id } = parseCartKey(key);
+
+      return PRODUCTS.some(p => p.id === id) && qty > 0;
+    });
 
     if (!entries.length) {
       alert("Tu carrito está vacío.");
@@ -450,14 +555,18 @@ if (whatsappBtn) {
     let message =
       "¡Hola! Quisiera realizar el siguiente pedido:\n\n";
 
-    entries.forEach(([idStr, qty]) => {
-      const product = PRODUCTS.find(
-        p => p.id === Number(idStr)
-      );
+    entries.forEach(([key, qty]) => {
+      const { id, flavor } = parseCartKey(key);
+      const product = PRODUCTS.find(p => p.id === id);
 
       if (product) {
-        message +=
-          `• ${product.name} x${qty} - ${money(product.price * qty)}\n`;
+        message += `• ${product.name}`;
+
+        if (flavor) {
+          message += ` - Sabor: ${flavor}`;
+        }
+
+        message += ` x${qty} - ${money(product.price * qty)}\n`;
       }
     });
 
@@ -490,11 +599,9 @@ if (whatsappBtn) {
   };
 }
 
-/* INICIALIZACIÓN */
-
+// INICIALIZACIÓN
 createPaymentPanel();
 
-/* Verificar que products.js se haya cargado correctamente. */
 if (typeof PRODUCTS === "undefined" || !Array.isArray(PRODUCTS)) {
   if (productsEl) {
     productsEl.innerHTML = `
@@ -504,10 +611,13 @@ if (typeof PRODUCTS === "undefined" || !Array.isArray(PRODUCTS)) {
     `;
   }
 } else {
-  // Quitar del carrito productos que ya no existen.
-  Object.keys(cart).forEach(id => {
-    if (!PRODUCTS.some(p => p.id === Number(id))) {
-      delete cart[id];
+  normalizeCart();
+
+  Object.keys(cart).forEach(key => {
+    const { id } = parseCartKey(key);
+
+    if (!PRODUCTS.some(p => p.id === id)) {
+      delete cart[key];
     }
   });
 
