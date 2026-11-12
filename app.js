@@ -16,7 +16,6 @@ const PAYMENT_ALIAS = "jys.helados";
 const PAYMENT_CBU = "4530000800064115348581";
 const PAYMENT_HOLDER = "Aldana Rocio Sempolis";
 const WHATSAPP_PHONE = "5492214949199";
-
 const CATALOG_URL = "https://heladeriajys.github.io/Heladeriajys/";
 
 let currentCategory = "Todos";
@@ -87,7 +86,11 @@ function normalizeCart() {
     if (typeof qty !== "number" || qty <= 0) return;
 
     if (key.includes("::")) {
-      normalized[key] = (normalized[key] || 0) + qty;
+      const { id } = parseCartKey(key);
+
+      if (PRODUCTS.some(p => p.id === id)) {
+        normalized[key] = (normalized[key] || 0) + qty;
+      }
     } else {
       const id = Number(key);
 
@@ -130,90 +133,84 @@ function closeCartModal() {
   if (modal) modal.classList.remove("open", "active");
 }
 
-// BOTÓN COMPARTIR CATÁLOGO
+// COMPARTIR CATÁLOGO
 function setupShareButton() {
-  const headerContainer = document.querySelector(".header-container");
+  const header = document.querySelector(".header-container");
 
-  if (!headerContainer || document.getElementById("shareCatalogBtn")) {
-    return;
-  }
+  if (!header || document.getElementById("shareCatalogBtn")) return;
 
   const button = document.createElement("button");
 
   button.id = "shareCatalogBtn";
   button.type = "button";
   button.textContent = "↗ Compartir";
-  button.setAttribute("aria-label", "Compartir catálogo");
 
   button.style.cssText = `
-    background:#ffe3eb;
-    color:#d9577d;
-    border:1px solid #ffb4c7;
-    border-radius:10px;
-    padding:10px 12px;
-    font-family:Poppins,sans-serif;
-    font-size:12px;
-    font-weight:600;
-    cursor:pointer;
-    white-space:nowrap;
+    border: 0;
+    border-radius: 20px;
+    padding: 9px 14px;
+    margin: 5px;
+    background: #ffe3eb;
+    color: #c43d68;
+    font-weight: 700;
+    cursor: pointer;
   `;
+
+  const cartButton =
+    header.querySelector("#openCart") ||
+    header.querySelector(".cart-btn-header");
+
+  if (cartButton) {
+    cartButton.insertAdjacentElement("beforebegin", button);
+  } else {
+    header.appendChild(button);
+  }
 
   button.addEventListener("click", async () => {
     const shareData = {
       title: "Distribuidora de Helados JyS",
-      text: "¡Conocé nuestro catálogo de helados mayorista y minorista!",
+      text: "¡Mirá nuestro catálogo de helados!",
       url: CATALOG_URL
     };
 
     try {
       if (navigator.share) {
         await navigator.share(shareData);
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(CATALOG_URL);
+        alert("¡Enlace del catálogo copiado!");
       } else {
-        await copyCatalogLink();
+        window.prompt("Copiá el enlace del catálogo:", CATALOG_URL);
       }
     } catch (error) {
       if (error.name !== "AbortError") {
-        await copyCatalogLink();
+        window.prompt("Copiá el enlace del catálogo:", CATALOG_URL);
       }
     }
   });
-
-  const cartButton = headerContainer.querySelector("#openCart");
-
-  if (cartButton) {
-    headerContainer.insertBefore(button, cartButton);
-  } else {
-    headerContainer.appendChild(button);
-  }
 }
 
-async function copyCatalogLink() {
-  try {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(CATALOG_URL);
-    } else {
-      const temporaryInput = document.createElement("textarea");
+// ETIQUETA NUEVO
+function renderNewBadge(product) {
+  if (!product.isNew) return "";
 
-      temporaryInput.value = CATALOG_URL;
-      temporaryInput.style.position = "fixed";
-      temporaryInput.style.opacity = "0";
-
-      document.body.appendChild(temporaryInput);
-      temporaryInput.select();
-
-      const copied = document.execCommand("copy");
-
-      temporaryInput.remove();
-
-      if (!copied) throw new Error("No se pudo copiar");
-    }
-
-    alert("¡Enlace del catálogo copiado! Ya podés compartirlo.");
-  } catch {
-    window.prompt("Copiá el enlace de tu catálogo:", CATALOG_URL);
-  }
+  return `
+    <span style="
+      display:inline-block;
+      background:#ff8fab;
+      color:white;
+      padding:4px 10px;
+      border-radius:20px;
+      font-size:11px;
+      font-weight:800;
+      margin-bottom:7px;
+    ">
+      NUEVO
+    </span>
+  `;
 }
 
+// FILTROS
 function renderFilters() {
   if (!filtersEl) return;
 
@@ -235,6 +232,7 @@ function renderFilters() {
   });
 }
 
+// IMÁGENES
 function productImage(product) {
   const image = IMAGE_BY_ID[product.id];
 
@@ -263,25 +261,21 @@ function productImage(product) {
   `;
 }
 
-// ETIQUETA DE PRODUCTO NUEVO
-function renderNewBadge(product) {
-  if (!product.isNew) return "";
+// DESCRIPCIÓN
+function renderProductDescription(product) {
+  const description = product.description || "";
+
+  if (!description) return "";
 
   return `
-    <span style="
-      display:inline-block;
-      background:#ff8fab;
-      color:#ffffff;
-      font-family:Poppins,sans-serif;
-      font-size:10px;
-      font-weight:700;
-      padding:4px 9px;
-      border-radius:20px;
-      margin-bottom:7px;
-      letter-spacing:0.4px;
+    <p class="product-description" style="
+      color:#777;
+      font-size:13px;
+      line-height:1.5;
+      margin:6px 0 10px;
     ">
-      NUEVO
-    </span>
+      ${description}
+    </p>
   `;
 }
 
@@ -324,11 +318,8 @@ function renderFlavorSelector(product) {
           <label style="
             display:flex;
             align-items:center;
-            justify-content:flex-start;
             gap:5px;
             min-width:0;
-            max-width:100%;
-            box-sizing:border-box;
             padding:8px 6px;
             border:1px solid #f3b5c8;
             border-radius:9px;
@@ -358,9 +349,7 @@ function renderFlavorSelector(product) {
               display:block;
               min-width:0;
               flex:1;
-              white-space:normal;
               overflow-wrap:anywhere;
-              word-break:normal;
             ">${flavor}</span>
 
           </label>
@@ -382,6 +371,7 @@ function renderFlavorSelector(product) {
   `;
 }
 
+// MOSTRAR PRODUCTOS
 function renderProducts() {
   if (!productsEl) return;
 
@@ -419,6 +409,8 @@ function renderProducts() {
 
         <h3 class="product-name">${product.name}</h3>
 
+        ${renderProductDescription(product)}
+
         <p class="product-price">${money(product.price)}</p>
 
         ${renderFlavorSelector(product)}
@@ -440,18 +432,18 @@ if (searchInput) {
   });
 }
 
+// GUARDAR CARRITO
 function saveCart() {
   localStorage.setItem("jys-cart", JSON.stringify(cart));
 }
 
-// AGREGAR PRODUCTOS Y VARIOS SABORES
+// AGREGAR PRODUCTOS
 function addToCart(id) {
   const product = PRODUCTS.find(p => p.id === Number(id));
 
   if (!product) return;
 
   if (product.flavors && product.flavors.length) {
-
     const selectedFlavors = [
       ...document.querySelectorAll(
         `.product-flavor-checkbox[data-product-id="${id}"]:checked`
@@ -465,7 +457,6 @@ function addToCart(id) {
 
     selectedFlavors.forEach(flavor => {
       const key = cartKey(id, flavor);
-
       cart[key] = (cart[key] || 0) + 1;
     });
 
@@ -476,9 +467,7 @@ function addToCart(id) {
     });
 
   } else {
-
     const key = cartKey(id, "");
-
     cart[key] = (cart[key] || 0) + 1;
   }
 
@@ -489,11 +478,9 @@ function addToCart(id) {
 
 window.addToCart = addToCart;
 
-// BOTONES DEL CARRITO: +, - Y PAPELERA
+// BOTONES DEL CARRITO
 if (cartItemsEl) {
-
   cartItemsEl.addEventListener("click", event => {
-
     const button = event.target.closest("[data-cart-action]");
 
     if (!button || !cartItemsEl.contains(button)) return;
@@ -521,11 +508,10 @@ if (cartItemsEl) {
 
     saveCart();
     renderCart();
-
   });
-
 }
 
+// PANEL DE PAGO
 function createPaymentPanel() {
   if (
     !paymentMethodEl ||
@@ -533,7 +519,6 @@ function createPaymentPanel() {
   ) return;
 
   const panel = document.createElement("div");
-
   panel.id = "paymentDetailsPanel";
 
   panel.style.cssText =
@@ -542,7 +527,6 @@ function createPaymentPanel() {
   paymentMethodEl.insertAdjacentElement("afterend", panel);
 
   panel.addEventListener("click", async event => {
-
     const button = event.target.closest("[data-copy]");
 
     if (!button) return;
@@ -550,13 +534,9 @@ function createPaymentPanel() {
     const value = button.dataset.copy;
 
     try {
-
       if (navigator.clipboard && window.isSecureContext) {
-
         await navigator.clipboard.writeText(value);
-
       } else {
-
         const temporaryInput = document.createElement("textarea");
 
         temporaryInput.value = value;
@@ -564,18 +544,15 @@ function createPaymentPanel() {
         temporaryInput.style.opacity = "0";
 
         document.body.appendChild(temporaryInput);
-
         temporaryInput.select();
 
         const copied = document.execCommand("copy");
-
         temporaryInput.remove();
 
         if (!copied) throw new Error("No se pudo copiar");
       }
 
       const originalText = button.textContent;
-
       button.textContent = "¡Copiado!";
 
       setTimeout(() => {
@@ -583,11 +560,8 @@ function createPaymentPanel() {
       }, 1500);
 
     } catch {
-
       window.prompt("Copiá este dato:", value);
-
     }
-
   });
 }
 
@@ -604,7 +578,6 @@ function renderPaymentPanel() {
   const total = getCartTotal();
 
   if (method === "Transferencia") {
-
     panel.style.display = "block";
 
     panel.innerHTML = `
@@ -637,13 +610,11 @@ function renderPaymentPanel() {
       </p>
 
       <div style="padding:12px;background:#fff;border-radius:8px;margin-top:8px">
-
         <strong>Total del pedido:</strong>
 
         <div style="font-size:23px;font-weight:700;color:#087e8b">
           ${money(total)}
         </div>
-
       </div>
 
       <p style="font-size:13px;margin-top:10px">
@@ -653,7 +624,6 @@ function renderPaymentPanel() {
     `;
 
   } else if (method === "Mercado Pago") {
-
     panel.style.display = "block";
 
     panel.innerHTML = `
@@ -674,10 +644,8 @@ function renderPaymentPanel() {
     `;
 
   } else {
-
     panel.style.display = "none";
     panel.innerHTML = "";
-
   }
 }
 
@@ -692,29 +660,23 @@ function renderCart() {
   const entries = Object.entries(cart);
 
   if (!entries.length) {
-
     cartItemsEl.innerHTML =
       "<p class='empty-cart'>Tu carrito está vacío</p>";
 
   } else {
-
     cartItemsEl.innerHTML = entries.map(([key, qty]) => {
-
       const { id, flavor } = parseCartKey(key);
-
       const product = PRODUCTS.find(p => p.id === id);
 
       if (!product) return "";
 
       const subtotal = product.price * qty;
-
       const encodedKey = encodeURIComponent(key);
 
       return `
         <div class="cart-item">
 
           <div>
-
             <strong>${product.name}</strong>
 
             ${flavor ? `
@@ -726,7 +688,6 @@ function renderCart() {
             <div>
               ${money(product.price)} x ${qty} = ${money(subtotal)}
             </div>
-
           </div>
 
           <div class="cart-controls"
@@ -760,12 +721,9 @@ function renderCart() {
             </button>
 
           </div>
-
         </div>
       `;
-
     }).join("");
-
   }
 
   const count = Object.values(cart).reduce(
@@ -799,7 +757,7 @@ function renderCart() {
   renderPaymentPanel();
 }
 
-// VACIAR CARRITO AUTOMÁTICAMENTE
+// VACIAR CARRITO DESPUÉS DEL PEDIDO
 function clearCartAfterOrder() {
   cart = {};
 
@@ -825,15 +783,11 @@ if (closeCartBtn) {
 
 // PEDIDO POR WHATSAPP
 if (whatsappBtn) {
-
   whatsappBtn.onclick = () => {
-
     const entries = Object.entries(cart).filter(([key, qty]) => {
-
       const { id } = parseCartKey(key);
 
       return PRODUCTS.some(p => p.id === id) && qty > 0;
-
     });
 
     if (!entries.length) {
@@ -841,4 +795,24 @@ if (whatsappBtn) {
       return;
     }
 
-    const total =
+    const total = getCartTotal();
+
+    const address = deliveryAddressEl
+      ? deliveryAddressEl.value.trim()
+      : "";
+
+    const payment = paymentMethodEl
+      ? paymentMethodEl.value
+      : "No especificada";
+
+    const notes = orderNotesEl
+      ? orderNotesEl.value.trim()
+      : "";
+
+    if (!address) {
+      alert("Por favor, ingresá tu dirección de entrega antes de enviar.");
+      return;
+    }
+
+    let message =
+      "¡Hola! Quisiera realizar el
