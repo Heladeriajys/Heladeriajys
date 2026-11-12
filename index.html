@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,7 +13,6 @@
   <link rel="stylesheet" href="style.css?v=8">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Ayuda visual para hacer pedidos y carrito fijo en celulares -->
   <style>
     .order-help {
       max-width: 760px;
@@ -40,6 +40,10 @@
 
     .floating-cart-button {
       display: none;
+    }
+
+    .floating-cart-button.cart-is-open {
+      display: none !important;
     }
 
     @media (max-width: 768px) {
@@ -135,18 +139,18 @@
 
       </section>
 
-      <!-- GUÍA RÁPIDA PARA HACER EL PEDIDO -->
-      <section class="order-help" aria-label="Cómo hacer un pedido">
+      <!-- GUÍA PARA HACER EL PEDIDO -->
+      <section class="order-help">
         <h2>🛒 ¿Cómo hacer tu pedido?</h2>
         <ol>
           <li>Elegí los productos que necesitás.</li>
-          <li>Tocá <strong>Agregar al carrito</strong> en cada producto.</li>
-          <li>Abrí <strong>Ver mi pedido</strong> para revisar lo que elegiste.</li>
+          <li>Tocá Agregar al carrito en cada producto.</li>
+          <li>Abrí Ver mi pedido para revisar lo que elegiste.</li>
           <li>Completá tu dirección, elegí el pago y enviá el pedido por WhatsApp.</li>
         </ol>
       </section>
 
-      <!-- AVISO COMPACTO BALDES DE 10 LITROS -->
+      <!-- AVISO BALDES DE 10 LITROS -->
       <a
         href="https://wa.me/5492214949199?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20los%20baldes%20de%2010%20litros."
         target="_blank"
@@ -240,7 +244,7 @@
 
   </div>
 
-  <!-- BOTÓN FIJO DEL CARRITO EN CELULARES -->
+  <!-- BOTÓN FIJO DEL CARRITO -->
   <button
     type="button"
     id="floatingCartButton"
@@ -266,16 +270,30 @@
     });
   </script>
 
-  <!-- FUNCIONAMIENTO DEL BOTÓN FIJO DEL CARRITO -->
+  <!-- FUNCIONAMIENTO DEL BOTÓN FIJO -->
   <script>
     const floatingCartButton = document.getElementById("floatingCartButton");
     const floatingCartCount = document.getElementById("floatingCartCount");
     const headerCartCount = document.getElementById("cartCount");
     const headerCartButton = document.getElementById("openCart");
+    const closeCartButton = document.getElementById("closeCart");
+
+    function hideFloatingCartButton() {
+      floatingCartButton.classList.add("cart-is-open");
+    }
+
+    function showFloatingCartButton() {
+      floatingCartButton.classList.remove("cart-is-open");
+    }
 
     floatingCartButton.addEventListener("click", function () {
+      hideFloatingCartButton();
       headerCartButton.click();
     });
+
+    headerCartButton.addEventListener("click", hideFloatingCartButton);
+
+    closeCartButton.addEventListener("click", showFloatingCartButton);
 
     function updateFloatingCartCount() {
       floatingCartCount.textContent = headerCartCount.textContent || "(0)";
@@ -284,6 +302,7 @@
     updateFloatingCartCount();
 
     const cartCountObserver = new MutationObserver(updateFloatingCartCount);
+
     cartCountObserver.observe(headerCartCount, {
       childList: true,
       characterData: true,
@@ -291,7 +310,7 @@
     });
   </script>
 
-  <!-- ACTUALIZACIÓN AUTOMÁTICA DEL CATÁLOGO -->
+  <!-- ACTUALIZACIÓN AUTOMÁTICA -->
   <script>
     if ("serviceWorker" in navigator) {
 
