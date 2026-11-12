@@ -177,39 +177,96 @@ function productImage(product) {
   `;
 }
 
-// SELECCIÓN DE VARIOS SABORES
+// SELECTOR DE SABORES MEJORADO
 function renderFlavorSelector(product) {
   if (!product.flavors || !product.flavors.length) {
     return "";
   }
 
   return `
-    <div class="flavor-selector" style="margin:12px 0;">
+    <div class="flavor-selector" style="
+      margin:10px 0;
+      width:100%;
+      max-width:100%;
+      min-width:0;
+      box-sizing:border-box;
+      overflow:hidden;
+    ">
 
-      <label style="display:block;font-weight:600;margin-bottom:8px;font-size:14px;">
+      <label style="
+        display:block;
+        font-weight:600;
+        margin-bottom:8px;
+        font-size:13px;
+        color:#444;
+      ">
         Elegí uno o varios sabores:
       </label>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:6px;
+        width:100%;
+        max-width:100%;
+        box-sizing:border-box;
+      ">
 
         ${product.flavors.map(flavor => `
-          <label style="display:flex;align-items:center;gap:6px;padding:8px;border:1px solid #f3b5c8;border-radius:8px;background:#fff8fa;font-size:13px;">
+          <label style="
+            display:flex;
+            align-items:center;
+            justify-content:flex-start;
+            gap:5px;
+            min-width:0;
+            max-width:100%;
+            box-sizing:border-box;
+            padding:8px 6px;
+            border:1px solid #f3b5c8;
+            border-radius:9px;
+            background:#fff8fa;
+            font-size:11px;
+            line-height:1.3;
+            cursor:pointer;
+            overflow:hidden;
+          ">
 
             <input
               type="checkbox"
               class="product-flavor-checkbox"
               data-product-id="${product.id}"
               value="${flavor}"
-              style="accent-color:#f76f96;width:16px;height:16px;">
+              style="
+                accent-color:#f76f96;
+                width:14px;
+                height:14px;
+                min-width:14px;
+                margin:0;
+                flex-shrink:0;
+                cursor:pointer;
+              ">
 
-            ${flavor}
+            <span style="
+              display:block;
+              min-width:0;
+              flex:1;
+              white-space:normal;
+              overflow-wrap:anywhere;
+              word-break:normal;
+            ">${flavor}</span>
 
           </label>
         `).join("")}
 
       </div>
 
-      <small style="display:block;color:#777;margin-top:7px;font-size:12px;">
+      <small style="
+        display:block;
+        color:#888;
+        margin-top:7px;
+        font-size:11px;
+        line-height:1.4;
+      ">
         Cada sabor seleccionado agrega una caja completa.
       </small>
 
