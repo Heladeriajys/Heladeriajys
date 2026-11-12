@@ -1,4 +1,3 @@
-
 const productsEl = document.getElementById("products");
 const filtersEl = document.getElementById("filters");
 const cartItemsEl = document.getElementById("cartItems");
@@ -815,4 +814,87 @@ if (whatsappBtn) {
     }
 
     let message =
-      "¡Hola! Quisiera realizar el
+      "¡Hola! Quisiera realizar el siguiente pedido:\n\n";
+
+    entries.forEach(([key, qty]) => {
+      const { id, flavor } = parseCartKey(key);
+      const product = PRODUCTS.find(p => p.id === id);
+
+      if (product) {
+        message += `• ${product.name}`;
+
+        if (flavor) {
+          message += ` - Sabor: ${flavor}`;
+        }
+
+        message += ` x${qty} - ${money(product.price * qty)}\n`;
+      }
+    });
+
+    message += `\n*Total:* ${money(total)}`;
+    message += `\n*Forma de pago:* ${payment}`;
+    message += `\n*Dirección:* ${address}`;
+
+    if (payment === "Transferencia") {
+      message += "\n\n*Datos para transferir*";
+      message += `\nTitular: ${PAYMENT_HOLDER}`;
+      message += `\nAlias: ${PAYMENT_ALIAS}`;
+      message += `\nCBU: ${PAYMENT_CBU}`;
+      message += `\nImporte: ${money(total)}`;
+      message += "\nEl pago queda pendiente de verificación.";
+    }
+
+    if (payment === "Mercado Pago") {
+      message +=
+        "\n\nQuisiera recibir un enlace de pago por billetera virtual.";
+    }
+
+    if (notes) {
+      message += `\n*Notas:* ${notes}`;
+    }
+
+    const url =
+      `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
+
+    const whatsappWindow = window.open(url, "_blank");
+
+    if (whatsappWindow) {
+      clearCartAfterOrder();
+    } else {
+      alert(
+        "No se pudo abrir WhatsApp. Permití las ventanas emergentes e intentá nuevamente. Tu carrito sigue guardado."
+      );
+    }
+  };
+}
+
+// INICIALIZACIÓN
+createPaymentPanel();
+setupShareButton();
+
+if (typeof PRODUCTS === "undefined" || !Array.isArray(PRODUCTS)) {
+  if (productsEl) {
+    productsEl.innerHTML = `
+      <p style="grid-column:1/-1;text-align:center;padding:20px;color:#b00020">
+        No se pudieron cargar los productos. Recargá la página o intentá más tarde.
+      </p>
+    `;
+  }
+
+} else {
+  normalizeCart();
+
+  Object.keys(cart).forEach(key => {
+    const { id } = parseCartKey(key);
+
+    if (!PRODUCTS.some(p => p.id === id)) {
+      delete cart[key];
+    }
+  });
+
+  saveCart();
+  renderFilters();
+  renderProducts();
+  renderCart();
+}
+
