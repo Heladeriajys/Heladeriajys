@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,6 +11,66 @@
 
   <link rel="stylesheet" href="style.css?v=8">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Ayuda visual para hacer pedidos y carrito fijo en celulares -->
+  <style>
+    .order-help {
+      max-width: 760px;
+      margin: 14px auto 18px;
+      padding: 14px 16px;
+      background: #e6f9fb;
+      border: 1px solid #b8e9ef;
+      border-radius: 14px;
+      color: #31565b;
+      font-family: Poppins, sans-serif;
+    }
+
+    .order-help h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      color: #24545b;
+    }
+
+    .order-help ol {
+      margin: 0;
+      padding-left: 22px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .floating-cart-button {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .floating-cart-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        position: fixed;
+        z-index: 999;
+        left: 16px;
+        right: 16px;
+        bottom: max(14px, env(safe-area-inset-bottom));
+        min-height: 52px;
+        padding: 12px 18px;
+        border: 0;
+        border-radius: 999px;
+        background: #ff8fab;
+        color: #ffffff;
+        font-family: Poppins, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+      }
+
+      body {
+        padding-bottom: 82px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -74,6 +133,17 @@
 
         <div class="filters-container" id="filters"></div>
 
+      </section>
+
+      <!-- GUÍA RÁPIDA PARA HACER EL PEDIDO -->
+      <section class="order-help" aria-label="Cómo hacer un pedido">
+        <h2>🛒 ¿Cómo hacer tu pedido?</h2>
+        <ol>
+          <li>Elegí los productos que necesitás.</li>
+          <li>Tocá <strong>Agregar al carrito</strong> en cada producto.</li>
+          <li>Abrí <strong>Ver mi pedido</strong> para revisar lo que elegiste.</li>
+          <li>Completá tu dirección, elegí el pago y enviá el pedido por WhatsApp.</li>
+        </ol>
       </section>
 
       <!-- AVISO COMPACTO BALDES DE 10 LITROS -->
@@ -170,6 +240,16 @@
 
   </div>
 
+  <!-- BOTÓN FIJO DEL CARRITO EN CELULARES -->
+  <button
+    type="button"
+    id="floatingCartButton"
+    class="floating-cart-button"
+    aria-label="Abrir mi pedido"
+  >
+    🛒 Ver mi pedido <span id="floatingCartCount">(0)</span>
+  </button>
+
   <!-- PRODUCTOS Y APLICACIÓN -->
   <script src="products.js?v=9"></script>
   <script src="app.js?v=10"></script>
@@ -183,6 +263,31 @@
     enterButton.addEventListener("click", function () {
       introScreen.classList.add("intro-hidden");
       catalogContent.classList.add("catalog-visible");
+    });
+  </script>
+
+  <!-- FUNCIONAMIENTO DEL BOTÓN FIJO DEL CARRITO -->
+  <script>
+    const floatingCartButton = document.getElementById("floatingCartButton");
+    const floatingCartCount = document.getElementById("floatingCartCount");
+    const headerCartCount = document.getElementById("cartCount");
+    const headerCartButton = document.getElementById("openCart");
+
+    floatingCartButton.addEventListener("click", function () {
+      headerCartButton.click();
+    });
+
+    function updateFloatingCartCount() {
+      floatingCartCount.textContent = headerCartCount.textContent || "(0)";
+    }
+
+    updateFloatingCartCount();
+
+    const cartCountObserver = new MutationObserver(updateFloatingCartCount);
+    cartCountObserver.observe(headerCartCount, {
+      childList: true,
+      characterData: true,
+      subtree: true
     });
   </script>
 
