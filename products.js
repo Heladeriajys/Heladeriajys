@@ -32,7 +32,6 @@ const PRODUCTS = [
   { id: 5, name: 'Bombón Crocante "Val Cream" (Caja x 24 un.)', price: 14200, category: 'Bombones', emoji: '🍫' },
   { id: 13, name: 'Alfabom "May Cream" (Caja x 18 un.)', price: 12500, category: 'Bombones', emoji: '🍪' },
   { id: 32, name: 'Latidos "Val Cream" (Caja x 18 un.)', price: 13000, category: 'Bombones', emoji: '🍫' },
-
   {
     id: 35,
     name: 'ALFATUR (Caja x 12 un.)',
@@ -40,6 +39,14 @@ const PRODUCTS = [
     category: 'Bombones',
     emoji: '🍫',
     flavors: ['Pink', 'Cielo', 'Menta', 'White']
+  },
+  {
+    id: 36,
+    name: 'Nevado (Caja x 24 un.)',
+    price: 9500,
+    category: 'Bombones',
+    emoji: '🍫',
+    flavors: ['Dulce de leche', 'Americana']
   },
 
   // CONOS
