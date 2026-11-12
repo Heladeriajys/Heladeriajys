@@ -38,6 +38,7 @@ const PRODUCTS = [
     price: 15000,
     category: 'Bombones',
     emoji: '🍫',
+    isNew: true,
     flavors: ['Pink', 'Cielo', 'Menta', 'White']
   },
   {
@@ -46,6 +47,7 @@ const PRODUCTS = [
     price: 9500,
     category: 'Bombones',
     emoji: '🍫',
+    isNew: true,
     flavors: ['Dulce de leche', 'Americana']
   },
 
@@ -57,8 +59,22 @@ const PRODUCTS = [
   { id: 27, name: 'Tortas Heladas (Por unidad)', price: 14500, category: 'Postres', emoji: '🎂' },
   { id: 19, name: 'Copón "May Cream" (Caja x 12 un.)', price: 21000, category: 'Postres', emoji: '🍨' },
   { id: 15, name: 'Cassatas "May Cream" (Caja x 12 un.)', price: 16300, category: 'Postres', emoji: '🍰' },
-  { id: 29, name: 'Tricolor "Postre helado" (Caja x 8 un.)', price: 15000, category: 'Postres', emoji: '🍰' },
-  { id: 30, name: 'Tricolor "Postre helado" (Caja x 20 un.)', price: 36500, category: 'Postres', emoji: '🍰' },
+  {
+    id: 29,
+    name: 'Tricolor "Postre helado" (Caja x 8 un.)',
+    price: 15000,
+    category: 'Postres',
+    emoji: '🍰',
+    isNew: true
+  },
+  {
+    id: 30,
+    name: 'Tricolor "Postre helado" (Caja x 20 un.)',
+    price: 36500,
+    category: 'Postres',
+    emoji: '🍰',
+    isNew: true
+  },
   { id: 31, name: 'Tacitas 90cc (Caja x 24 un.)', price: 15500, category: 'Postres', emoji: '🍨' },
 
   // HOGAR
