@@ -54,7 +54,8 @@ const IMAGE_BY_ID = {
   32: "foto-latidos.jpg",
   33: "foto-chupa-chups.jpg",
   34: "foto-alfa-granizado.jpg",
-  35: "foto-alfatur.jpg"
+  35: "foto-alfatur.jpg",
+  36: "foto-nevado.png"
 };
 
 const money = n =>
@@ -301,7 +302,6 @@ function addToCart(id) {
       cart[key] = (cart[key] || 0) + 1;
     });
 
-    // Desmarcar los sabores después de agregarlos
     document.querySelectorAll(
       `.product-flavor-checkbox[data-product-id="${id}"]`
     ).forEach(input => {
