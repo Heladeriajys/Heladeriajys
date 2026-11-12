@@ -17,6 +17,8 @@ const PAYMENT_CBU = "4530000800064115348581";
 const PAYMENT_HOLDER = "Aldana Rocio Sempolis";
 const WHATSAPP_PHONE = "5492214949199";
 
+const CATALOG_URL = "https://heladeriajys.github.io/Heladeriajys/";
+
 let currentCategory = "Todos";
 let searchQuery = "";
 let cart = {};
@@ -128,6 +130,90 @@ function closeCartModal() {
   if (modal) modal.classList.remove("open", "active");
 }
 
+// BOTÓN COMPARTIR CATÁLOGO
+function setupShareButton() {
+  const headerContainer = document.querySelector(".header-container");
+
+  if (!headerContainer || document.getElementById("shareCatalogBtn")) {
+    return;
+  }
+
+  const button = document.createElement("button");
+
+  button.id = "shareCatalogBtn";
+  button.type = "button";
+  button.textContent = "↗ Compartir";
+  button.setAttribute("aria-label", "Compartir catálogo");
+
+  button.style.cssText = `
+    background:#ffe3eb;
+    color:#d9577d;
+    border:1px solid #ffb4c7;
+    border-radius:10px;
+    padding:10px 12px;
+    font-family:Poppins,sans-serif;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+  `;
+
+  button.addEventListener("click", async () => {
+    const shareData = {
+      title: "Distribuidora de Helados JyS",
+      text: "¡Conocé nuestro catálogo de helados mayorista y minorista!",
+      url: CATALOG_URL
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await copyCatalogLink();
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        await copyCatalogLink();
+      }
+    }
+  });
+
+  const cartButton = headerContainer.querySelector("#openCart");
+
+  if (cartButton) {
+    headerContainer.insertBefore(button, cartButton);
+  } else {
+    headerContainer.appendChild(button);
+  }
+}
+
+async function copyCatalogLink() {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(CATALOG_URL);
+    } else {
+      const temporaryInput = document.createElement("textarea");
+
+      temporaryInput.value = CATALOG_URL;
+      temporaryInput.style.position = "fixed";
+      temporaryInput.style.opacity = "0";
+
+      document.body.appendChild(temporaryInput);
+      temporaryInput.select();
+
+      const copied = document.execCommand("copy");
+
+      temporaryInput.remove();
+
+      if (!copied) throw new Error("No se pudo copiar");
+    }
+
+    alert("¡Enlace del catálogo copiado! Ya podés compartirlo.");
+  } catch {
+    window.prompt("Copiá el enlace de tu catálogo:", CATALOG_URL);
+  }
+}
+
 function renderFilters() {
   if (!filtersEl) return;
 
@@ -177,7 +263,29 @@ function productImage(product) {
   `;
 }
 
-// SELECTOR DE SABORES MEJORADO
+// ETIQUETA DE PRODUCTO NUEVO
+function renderNewBadge(product) {
+  if (!product.isNew) return "";
+
+  return `
+    <span style="
+      display:inline-block;
+      background:#ff8fab;
+      color:#ffffff;
+      font-family:Poppins,sans-serif;
+      font-size:10px;
+      font-weight:700;
+      padding:4px 9px;
+      border-radius:20px;
+      margin-bottom:7px;
+      letter-spacing:0.4px;
+    ">
+      NUEVO
+    </span>
+  `;
+}
+
+// SELECTOR DE SABORES
 function renderFlavorSelector(product) {
   if (!product.flavors || !product.flavors.length) {
     return "";
@@ -304,6 +412,8 @@ function renderProducts() {
       </div>
 
       <div class="product-info">
+
+        ${renderNewBadge(product)}
 
         <span class="product-category">${product.category}</span>
 
@@ -731,127 +841,4 @@ if (whatsappBtn) {
       return;
     }
 
-    const total = getCartTotal();
-
-    const address = deliveryAddressEl
-      ? deliveryAddressEl.value.trim()
-      : "";
-
-    const payment = paymentMethodEl
-      ? paymentMethodEl.value
-      : "No especificada";
-
-    const notes = orderNotesEl
-      ? orderNotesEl.value.trim()
-      : "";
-
-    if (!address) {
-      alert("Por favor, ingresá tu dirección de entrega antes de enviar.");
-      return;
-    }
-
-    let message =
-      "¡Hola! Quisiera realizar el siguiente pedido:\n\n";
-
-    entries.forEach(([key, qty]) => {
-
-      const { id, flavor } = parseCartKey(key);
-
-      const product = PRODUCTS.find(p => p.id === id);
-
-      if (product) {
-
-        message += `• ${product.name}`;
-
-        if (flavor) {
-          message += ` - Sabor: ${flavor}`;
-        }
-
-        message += ` x${qty} - ${money(product.price * qty)}\n`;
-
-      }
-
-    });
-
-    message += `\n*Total:* ${money(total)}`;
-    message += `\n*Forma de pago:* ${payment}`;
-    message += `\n*Dirección:* ${address}`;
-
-    if (payment === "Transferencia") {
-
-      message += "\n\n*Datos para transferir*";
-      message += `\nTitular: ${PAYMENT_HOLDER}`;
-      message += `\nAlias: ${PAYMENT_ALIAS}`;
-      message += `\nCBU: ${PAYMENT_CBU}`;
-      message += `\nImporte: ${money(total)}`;
-      message += "\nEl pago queda pendiente de verificación.";
-
-    }
-
-    if (payment === "Mercado Pago") {
-
-      message +=
-        "\n\nQuisiera recibir un enlace de pago por billetera virtual.";
-
-    }
-
-    if (notes) {
-      message += `\n*Notas:* ${notes}`;
-    }
-
-    const url =
-      `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
-
-    const whatsappWindow = window.open(url, "_blank");
-
-    if (whatsappWindow) {
-
-      clearCartAfterOrder();
-
-    } else {
-
-      alert(
-        "No se pudo abrir WhatsApp. Permití las ventanas emergentes e intentá nuevamente. Tu carrito sigue guardado."
-      );
-
-    }
-
-  };
-
-}
-
-// INICIALIZACIÓN
-createPaymentPanel();
-
-if (typeof PRODUCTS === "undefined" || !Array.isArray(PRODUCTS)) {
-
-  if (productsEl) {
-
-    productsEl.innerHTML = `
-      <p style="grid-column:1/-1;text-align:center;padding:20px;color:#b00020">
-        No se pudieron cargar los productos. Recargá la página o intentá más tarde.
-      </p>
-    `;
-
-  }
-
-} else {
-
-  normalizeCart();
-
-  Object.keys(cart).forEach(key => {
-
-    const { id } = parseCartKey(key);
-
-    if (!PRODUCTS.some(p => p.id === id)) {
-      delete cart[key];
-    }
-
-  });
-
-  saveCart();
-  renderFilters();
-  renderProducts();
-  renderCart();
-
-}
+    const total =
