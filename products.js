@@ -25,9 +25,6 @@ const PRODUCTS = [
   { id: 34, name: 'Alfa Granizado "May Cream" (Caja x 18 un.)', price: 12500, category: 'Impulsivos', emoji: '🍦' },
 
   // BOMBONES
-  { id: 26, name: 'Mini Bombón "Val Cream" (Caja x 24 un.)', price: 12000, category: 'Bombones', emoji: '🍫' },
-  { id: 28, name: 'Mini Bombón Crocante "Val Cream" (Caja x 24 un.)', price: 12000, category: 'Bombones', emoji: '🍫' },
-  { id: 7, name: 'Mini Bombón Split "Val Cream" (Caja x 24 un.)', price: 12000, category: 'Bombones', emoji: '🍌' },
   { id: 3, name: 'Bombón "Val Cream" (Caja x 24 un.)', price: 14200, category: 'Bombones', emoji: '🍫' },
   { id: 5, name: 'Bombón Crocante "Val Cream" (Caja x 24 un.)', price: 14200, category: 'Bombones', emoji: '🍫' },
   { id: 13, name: 'Alfabom "May Cream" (Caja x 18 un.)', price: 12500, category: 'Bombones', emoji: '🍪' },
@@ -40,15 +37,6 @@ const PRODUCTS = [
     emoji: '🍫',
     isNew: true,
     flavors: ['Pink', 'Cielo', 'Menta', 'White']
-  },
-  {
-    id: 36,
-    name: 'Nevado (Caja x 24 un.)',
-    price: 9500,
-    category: 'Bombones',
-    emoji: '🍫',
-    isNew: true,
-    flavors: ['Dulce de leche', 'Americana']
   },
 
   // CONOS
